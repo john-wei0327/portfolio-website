@@ -457,6 +457,24 @@ main p {
   line-height: 1.3;
 }
 
+.experience-companies {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.experience-group {
+  margin: 0;
+}
+
+.experience-company-heading {
+  margin: 0 0 1.25rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+
 .experience-list {
   list-style: none;
   margin: 0;
@@ -466,10 +484,21 @@ main p {
   gap: 2rem;
 }
 
+.experience-group .experience-list {
+  margin: 0;
+  padding: 0 0 0 1.25rem;
+  border-left: 2px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+}
+
 .experience-item {
   margin: 0;
   padding: 0 0 0 1.25rem;
   border-left: 2px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+}
+
+.experience-group .experience-item {
+  padding: 0;
+  border-left: none;
 }
 
 .experience-role {
