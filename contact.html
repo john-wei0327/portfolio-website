@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact — John Wei</title>
+    <meta
+      name="description"
+      content="Get in touch with John Wei about your project."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="subpage">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="header">
+      <nav class="nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="projects.html">Projects</a>
+        <a href="skills.html">Skills</a>
+        <a href="experiences.html">Experiences</a>
+        <a href="contact.html" aria-current="page">Contact</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="section contact" aria-labelledby="contact-heading">
+        <div class="section-inner">
+          <h1 id="contact-heading" class="section-title">Contact</h1>
+          <p class="contact-intro">
+            Share a bit about your project or a link to work I should see. I
+            typically reply within two business days.
+          </p>
+          <form class="contact-form" id="contact-form" novalidate>
+            <div class="field">
+              <label for="name">Name</label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autocomplete="name"
+                required
+                placeholder="Your name"
+              />
+            </div>
+            <div class="field">
+              <label for="email">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                placeholder="you@example.com"
+              />
+            </div>
+            <div class="field field-full">
+              <label for="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="5"
+                required
+                placeholder="What are you working on?"
+              ></textarea>
+            </div>
+            <p class="form-error" id="form-error" role="alert" hidden></p>
+            <p class="form-success" id="form-success" role="status" hidden>
+              Thanks — your email client should open with a draft. If nothing
+              opens, you can write directly to
+              <a href="mailto:hello@example.com">hello@example.com</a>.
+            </p>
+            <button type="submit" class="btn btn-primary btn-submit">
+              Send message
+            </button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
