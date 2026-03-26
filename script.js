@@ -1,18 +1,17 @@
 (function () {
-  /** Change to your email — used for mailto drafts */
+  /**
+   * FormSubmit: inbox is tied to this form id (from their confirmation email).
+   * CONTACT_EMAIL is only for the fallback hint if submit fails.
+   */
   var CONTACT_EMAIL = "johnwei0327@gmail.com";
+  var FORMSUBMIT_FORM_ID = "497e311e0e0cca45119ca264025fef4d";
+  var FORMSUBMIT_AJAX = "https://formsubmit.co/ajax/" + FORMSUBMIT_FORM_ID;
 
   var form = document.getElementById("contact-form");
   var err = document.getElementById("form-error");
   var ok = document.getElementById("form-success");
 
   if (!form || !err || !ok) return;
-
-  var successMail = ok.querySelector("a[href^='mailto:']");
-  if (successMail) {
-    successMail.href = "mailto:" + CONTACT_EMAIL;
-    successMail.textContent = CONTACT_EMAIL;
-  }
 
   function setError(msg) {
     ok.hidden = true;
@@ -51,26 +50,56 @@
 
     var name = document.getElementById("name").value.trim();
     var email = document.getElementById("email").value.trim();
-    var body =
-      "Name: " +
-      name +
-      "\n" +
-      "Email: " +
-      email +
-      "\n\n" +
-      document.getElementById("message").value.trim();
+    var message = document.getElementById("message").value.trim();
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var label = submitBtn ? submitBtn.textContent : "";
 
-    var subject = encodeURIComponent("Portfolio contact from " + name);
-    var mailto =
-      "mailto:" +
-      CONTACT_EMAIL +
-      "?subject=" +
-      subject +
-      "&body=" +
-      encodeURIComponent(body);
+    setError("");
+    ok.hidden = true;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending…";
+    }
 
-    window.location.href = mailto;
-    ok.hidden = false;
-    form.reset();
+    fetch(FORMSUBMIT_AJAX, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        message: message,
+        _subject: "Portfolio contact from " + name,
+      }),
+    })
+      .then(function (res) {
+        return res.json().then(function (data) {
+          if (!res.ok) {
+            throw new Error(
+              (data && data.message) || "Could not send your message."
+            );
+          }
+          return data;
+        });
+      })
+      .then(function () {
+        ok.hidden = false;
+        form.reset();
+      })
+      .catch(function () {
+        setError(
+          "Could not send right now. Please try again or email " +
+            CONTACT_EMAIL +
+            " directly."
+        );
+      })
+      .finally(function () {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = label || "Send message";
+        }
+      });
   });
 })();
