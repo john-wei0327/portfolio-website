@@ -474,13 +474,37 @@ main p {
   flex-shrink: 0;
 }
 
+.project-card-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.5rem;
+  width: 100%;
+  margin: 0 0 0.2rem;
+}
+
 .project-card h2,
 .project-card-title {
-  margin: 0 0 0.2rem;
+  margin: 0;
   font-size: 1.0625rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--text);
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.project-card-kind {
+  flex-shrink: 0;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  line-height: 1.2;
+  padding: 0.12rem 0.45rem 0.14rem;
+  background: color-mix(in srgb, var(--accent) 9%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--border));
+  border-radius: 999px;
 }
 
 .project-card-main {
