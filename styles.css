@@ -660,6 +660,10 @@ main p {
   color: var(--text-muted);
 }
 
+.experience-item .experience-bullets {
+  margin-top: 0.75rem;
+}
+
 .experience-item p {
   margin: 0.75rem 0 0;
   font-size: 0.9375rem;
