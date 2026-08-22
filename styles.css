@@ -142,6 +142,10 @@ main p {
   margin: 0 auto;
 }
 
+.section.projects .section-inner {
+  max-width: 56rem;
+}
+
 .section-title {
   margin: 0 0 1.75rem;
   font-size: 0.8125rem;
@@ -494,14 +498,25 @@ main p {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 1.25rem;
+}
+
+@media (min-width: 760px) {
+  .project-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.project-item {
+  min-width: 0;
 }
 
 .project-card {
   position: relative;
   margin: 0;
+  height: 100%;
   padding: 1.25rem 1.35rem;
   background: var(--bg-elevated);
   border: 1px solid var(--border);
