@@ -11,7 +11,7 @@
 - [`about.html`](about.html) — about
 - [`projects.html`](projects.html) — projects 
 - [`skills.html`](skills.html) — skills
-- [`experiences.html`](experiences.html) — resume / work experience
+- [`resume.html`](resume.html) — resume / work experience
 - [`contact.html`](contact.html) — contact form
 - [`styles.css`](styles.css) — layout, navigation, sections, projects, skills, experiences, contact
 - [`script.js`](script.js) — contact form 
