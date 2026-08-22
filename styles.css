@@ -503,11 +503,23 @@ main p {
   content: "";
   position: absolute;
   left: 3.35rem;
-  top: 0.35rem;
+  top: 0;
   bottom: 0;
   width: 2px;
   background: color-mix(in srgb, var(--accent) 35%, var(--border));
   border-radius: 999px;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 85%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 85%,
+    transparent 100%
+  );
 }
 
 .project-year-group {
