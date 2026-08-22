@@ -103,4 +103,101 @@
     });
   }
 
+  function initProjectFilters() {
+    var filterContainer = document.getElementById("project-filters");
+    if (!filterContainer) return;
+
+    var projectRoot = filterContainer.closest(".section-inner, .projects-inner, main");
+    if (!projectRoot) return;
+
+    var projectItems = projectRoot.querySelectorAll(".project-list .project-item");
+    if (!projectItems.length) return;
+
+    var categories = [];
+
+    projectItems.forEach(function (item) {
+      var kinds = item.querySelectorAll(".project-card-title-row .project-card-kind");
+      var itemCategories = [];
+
+      kinds.forEach(function (kind) {
+        var label = kind.textContent.trim();
+        if (label && itemCategories.indexOf(label) === -1) {
+          itemCategories.push(label);
+        }
+        if (label && categories.indexOf(label) === -1) {
+          categories.push(label);
+        }
+      });
+
+      item.dataset.categories = itemCategories.join("|");
+    });
+
+    categories.sort();
+    filterContainer.textContent = "";
+
+    function countForFilter(filter) {
+      if (filter === "all") return projectItems.length;
+      var count = 0;
+      projectItems.forEach(function (item) {
+        var cats = (item.dataset.categories || "").split("|");
+        if (cats.indexOf(filter) !== -1) count++;
+      });
+      return count;
+    }
+
+    function applyFilter(filter) {
+      projectItems.forEach(function (item) {
+        var itemCategories = (item.dataset.categories || "").split("|");
+        var visible =
+          filter === "all" || itemCategories.indexOf(filter) !== -1;
+        item.hidden = !visible;
+      });
+
+      filterContainer.querySelectorAll(".project-filter-btn").forEach(function (btn) {
+        var isActive = btn.getAttribute("data-filter") === filter;
+        btn.classList.toggle("is-active", isActive);
+        btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+    }
+
+    function createFilterButton(label, value) {
+      var btn = document.createElement("button");
+      var labelEl = document.createElement("span");
+      var countEl = document.createElement("span");
+
+      btn.type = "button";
+      btn.className = "project-filter-btn";
+      btn.setAttribute("data-filter", value);
+      btn.setAttribute("aria-pressed", value === "all" ? "true" : "false");
+
+      labelEl.className = "project-filter-label";
+      labelEl.textContent = label;
+      countEl.className = "project-filter-count";
+      countEl.textContent = String(countForFilter(value));
+
+      btn.appendChild(labelEl);
+      btn.appendChild(countEl);
+
+      if (value === "all") {
+        btn.classList.add("is-active");
+      }
+
+      btn.addEventListener("click", function () {
+        applyFilter(value);
+      });
+      return btn;
+    }
+
+    filterContainer.appendChild(createFilterButton("All work", "all"));
+    categories.forEach(function (category) {
+      filterContainer.appendChild(createFilterButton(category, category));
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initProjectFilters);
+  } else {
+    initProjectFilters();
+  }
+
 })();
