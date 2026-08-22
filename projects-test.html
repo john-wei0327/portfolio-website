@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=3" />
+    <link rel="stylesheet" href="styles.css?v=6" />
   </head>
   <body class="subpage">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -44,10 +44,14 @@
             aria-label="Filter projects by category"
           ></div>
           <ul class="project-list">
-            <li class="project-item">
-              <div class="project-card">
+            <li class="project-item" data-project-id="squad-sync">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open Community Event Planning Web App details"
+              >
                 <div class="project-card-actions">
-                  <!-- Primary project URL: live app, demo, main portfolio entry, etc. -->
                   <a
                     class="project-card-icon-link"
                     href="https://hello-squad-sync.lovable.app/"
@@ -73,7 +77,6 @@
                       <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
                     </svg>
                   </a>
-                  <!-- Second URL: case study, write-up, slides, repo, or other page -->
                   <a
                     class="project-card-icon-link"
                     href="https://luxuriant-message-c8d.notion.site/Squad-Sync-334bb85e918f808fab52d0aa425eabe5?pvs=73"
@@ -99,13 +102,12 @@
                   </a>
                 </div>
                 <div class="project-card-main">
-                  <!-- Category: edit text inside <span class="project-card-kind"> -->
                   <div class="project-card-title-row">
                     <h2 class="project-card-title">Community Event Planning Web App</h2>
                     <span class="project-card-kind">Product</span>
                     <span class="project-card-kind">Vibe Coding</span>
                   </div>
-                  <time class="project-date" datetime="2026">2026</time>
+                  <time class="project-date" datetime="2026-02">February 2026</time>
                   <p class="project-meta">Cursor · Claude · Vercel</p>
                   <p class="project-card-desc">
                     Vibe coded a web app that allows friends to schedule, plan and host events together.
@@ -113,8 +115,8 @@
                 </div>
               </div>
             </li>
-            <li class="project-item">
-              <div class="project-card">
+            <li class="project-item" data-project-id="picnic-teardown">
+              <div class="project-card project-card--clickable" tabindex="0" role="button" aria-label="Open Picnic Product Teardown details">
                 <div class="project-card-actions">
                   <!-- Second URL: case study, write-up, slides, repo, or other page -->
                   <a
@@ -122,7 +124,7 @@
                     href="https://luxuriant-message-c8d.notion.site/Picnic-Product-Teardown-334bb85e918f80eb9b4ad5563f2846f0"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Open Canva x Prodigi Productathon write-up"
+                    aria-label="Open Picnic Product Teardown write-up"
                   >
                     <svg
                       class="project-card-link-icon"
@@ -146,7 +148,7 @@
                     <h2 class="project-card-title">Picnic Product Teardown</h2>
                     <span class="project-card-kind">Product</span>
                   </div>
-                  <time class="project-date" datetime="2026">2026</time>
+                  <time class="project-date" datetime="2026-04">April 2026</time>
                   <p class="project-meta">
                     Product Teardown · User Journey · Empathy Mapping
                   </p>
@@ -157,8 +159,8 @@
               </div>
             </li>
 
-            <li class="project-item">
-              <div class="project-card">
+            <li class="project-item" data-project-id="canva-productathon">
+              <div class="project-card project-card--clickable" tabindex="0" role="button" aria-label="Open Canva x Prodigi Productathon details">
                 <div class="project-card-actions">
                   <!-- Second URL: case study, write-up, slides, repo, or other page -->
                   <a
@@ -190,12 +192,102 @@
                     <h2 class="project-card-title">Canva x Prodigi Productathon</h2>
                     <span class="project-card-kind">Product</span>
                   </div>
-                  <time class="project-date" datetime="2022">2022</time>
+                  <time class="project-date" datetime="2022-02">February 2022</time>
                   <p class="project-meta">
                     Miro · Figma · User Journey · Empathy Mapping · Competitor Analysis
                   </p>
                   <p class="project-card-desc">
                     Built an draft mode feature that allows users to visualise their instagram feed before posting
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="project-item" data-project-id="gcp-migration">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open GCP Data Migration details"
+              >
+                <div class="project-card-main">
+                  <div class="project-card-title-row">
+                    <h2 class="project-card-title">GCP Data Migration</h2>
+                    <span class="project-card-kind">Data Engineering</span>
+                  </div>
+                  <time class="project-date" datetime="2025-03">March 2025 - February 2026</time>
+                  <p class="project-meta">
+                    GCP Dataform · Airflow · Control-M · Bamboo · Claude AI
+                  </p>
+                  <p class="project-card-desc">
+                    Placeholder project card for testing data engineering filters.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="project-item" data-project-id="bdm-trigger">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open BDM Trigger Data Pipeline details"
+              >
+                <div class="project-card-main">
+                  <div class="project-card-title-row">
+                    <h2 class="project-card-title">BDM Trigger Data Pipeline</h2>
+                    <span class="project-card-kind">Data Analytics</span>
+                  </div>
+                  <time class="project-date" datetime="2024-07">July 2024 - October 2024</time>
+                  <p class="project-meta">
+                    ThoughtSpot · Alteryx · Python · Statistics
+                  </p>
+                  <p class="project-card-desc">
+                    Placeholder project card for testing data analytics filters.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="project-item" data-project-id="ai-fraud">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open AI Network Fraud Detection details"
+              >
+                <div class="project-card-main">
+                  <div class="project-card-title-row">
+                    <h2 class="project-card-title">AI Network Fraud Detection</h2>
+                    <span class="project-card-kind">Data Analytics</span>
+                  </div>
+                  <time class="project-date" datetime="2026-04">April 2026</time>
+                  <p class="project-meta">Google Copilot · Claude AI</p>
+                  <p class="project-card-desc">
+                    Placeholder project card for testing data analytics filters.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="project-item" data-project-id="alteryx-downstream">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open Alteryx Downstream Impact Analysis details"
+              >
+                <div class="project-card-main">
+                  <div class="project-card-title-row">
+                    <h2 class="project-card-title">
+                      Alteryx Downstream Impact Analysis
+                    </h2>
+                    <span class="project-card-kind">Data Analytics</span>
+                  </div>
+                  <time class="project-date" datetime="2026-05">May 2026</time>
+                  <p class="project-meta">Alteryx · Claude AI · SQL</p>
+                  <p class="project-card-desc">
+                    Placeholder project card for testing data analytics filters.
                   </p>
                 </div>
               </div>
@@ -222,6 +314,49 @@
       </div>
     </footer>
 
-    <script src="script.js?v=7"></script>
+    <div class="project-modal" id="project-detail-modal" hidden>
+      <div class="project-modal-backdrop" data-close-modal></div>
+      <div
+        class="project-modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="project-modal-title"
+      >
+        <header class="project-modal-header">
+          <div class="project-modal-heading">
+            <h2 id="project-modal-title" class="project-modal-title"></h2>
+            <p class="project-modal-subtitle"></p>
+          </div>
+          <button
+            type="button"
+            class="project-modal-close"
+            aria-label="Close project details"
+            data-close-modal
+          >
+            Close
+          </button>
+        </header>
+        <div class="project-modal-body">
+          <section class="project-modal-section">
+            <h3>The Problem/Challenge</h3>
+            <p data-project-field="problem"></p>
+          </section>
+          <section class="project-modal-section">
+            <h3>What I built, end-to-end</h3>
+            <p data-project-field="built"></p>
+          </section>
+          <section class="project-modal-section">
+            <h3>How I measured it</h3>
+            <p data-project-field="measured"></p>
+          </section>
+          <section class="project-modal-section">
+            <h3>The Impact and Final Result</h3>
+            <p data-project-field="impact"></p>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js?v=11"></script>
   </body>
 </html>

@@ -8,6 +8,9 @@
   --accent-hover: #1f342b;
   --filter-active-bg: #dce8e0;
   --filter-active-border: #b8cfc0;
+  --tool-tag-bg: #dce8e0;
+  --tool-tag-border: #b8cfc0;
+  --tool-tag-text: #2d4a3e;
   --radius: 12px;
   --font: "Instrument Sans", system-ui, -apple-system, sans-serif;
   --max: 640px;
@@ -505,6 +508,136 @@ main p {
   border-radius: var(--radius);
 }
 
+.project-card--clickable {
+  cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+.project-card--clickable:hover {
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
+  box-shadow: 0 8px 24px rgba(26, 26, 24, 0.06);
+}
+
+.project-card--clickable:focus {
+  outline: none;
+}
+
+.project-card--clickable:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.project-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+
+.project-modal[hidden] {
+  display: none;
+}
+
+.project-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(26, 26, 24, 0.45);
+  backdrop-filter: blur(4px);
+}
+
+.project-modal-panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 42rem);
+  max-height: min(88vh, 760px);
+  overflow: auto;
+  padding: 1.25rem 1.5rem 1.75rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: 0 24px 60px rgba(26, 26, 24, 0.18);
+}
+
+.project-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.project-modal-heading {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-modal-close {
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0.45rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.project-modal-close:hover,
+.project-modal-close:focus-visible {
+  color: var(--accent);
+  border-color: var(--filter-active-border);
+  background: var(--filter-active-bg);
+}
+
+.project-modal-title {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.project-modal-subtitle {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.project-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.35rem;
+}
+
+.project-modal-section h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.project-modal-section p {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  text-align: left;
+}
+
+body.project-modal-open {
+  overflow: hidden;
+}
+
 .project-card-actions {
   position: absolute;
   top: 0.65rem;
@@ -592,6 +725,38 @@ main p {
   padding: 0 2.75rem 0 0;
 }
 
+.project-date {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.project-card-main .project-tools {
+  margin: 0;
+}
+
+.project-tools {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.project-tools li {
+  margin: 0;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--tool-tag-text);
+  background: var(--tool-tag-bg);
+  border: 1px solid var(--tool-tag-border);
+  border-radius: 999px;
+  line-height: 1.35;
+}
+
 .project-card-main .project-meta {
   margin: 0;
   font-size: 0.75rem;
@@ -604,12 +769,6 @@ main p {
   font-size: 0.9375rem;
   color: var(--text-muted);
   line-height: 1.55;
-}
-
-.project-date {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  color: var(--text-muted);
 }
 
 .project-meta {

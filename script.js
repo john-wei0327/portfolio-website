@@ -103,6 +103,84 @@
     });
   }
 
+  var MONTHS = {
+    january: 1,
+    february: 2,
+    march: 3,
+    april: 4,
+    may: 5,
+    june: 6,
+    july: 7,
+    august: 8,
+    september: 9,
+    october: 10,
+    november: 11,
+    december: 12,
+  };
+
+  function parseDateValue(value) {
+    if (!value) return 0;
+    var parts = value.split("-");
+    var year = parseInt(parts[0], 10) || 0;
+    var month = parts.length > 1 ? parseInt(parts[1], 10) || 0 : 12;
+    return year * 100 + month;
+  }
+
+  function parseDisplayDate(text) {
+    var match = text.match(/([A-Za-z]+)\s+(\d{4})/);
+    if (!match) return 0;
+
+    var month = MONTHS[match[1].toLowerCase()] || 0;
+    var year = parseInt(match[2], 10) || 0;
+    if (!month || !year) return 0;
+
+    return year * 100 + month;
+  }
+
+  function getProjectSortKey(timeEl) {
+    if (!timeEl) return 0;
+
+    var explicitSort = timeEl.getAttribute("data-sort-date");
+    if (explicitSort) return parseDateValue(explicitSort);
+
+    var text = timeEl.textContent.trim();
+    if (text.indexOf(" - ") !== -1) {
+      var endPart = text.split(" - ").pop().trim();
+      var endKey = parseDisplayDate(endPart);
+      if (endKey) return endKey;
+    }
+
+    var displayKey = parseDisplayDate(text);
+    if (displayKey) return displayKey;
+
+    return parseDateValue(timeEl.getAttribute("datetime") || "0");
+  }
+
+  function sortProjectList(projectList) {
+    var projectItems = Array.prototype.slice.call(
+      projectList.querySelectorAll(".project-item")
+    );
+
+    projectItems.sort(function (a, b) {
+      var keyA = getProjectSortKey(a.querySelector(".project-date"));
+      var keyB = getProjectSortKey(b.querySelector(".project-date"));
+      return keyB - keyA;
+    });
+
+    projectItems.forEach(function (item) {
+      projectList.appendChild(item);
+    });
+
+    return projectItems;
+  }
+
+  function initProjectLists() {
+    var projectLists = document.querySelectorAll(".project-list");
+    projectLists.forEach(function (projectList) {
+      sortProjectList(projectList);
+    });
+  }
+
   function initProjectFilters() {
     var filterContainer = document.getElementById("project-filters");
     if (!filterContainer) return;
@@ -110,7 +188,10 @@
     var projectRoot = filterContainer.closest(".section-inner, .projects-inner, main");
     if (!projectRoot) return;
 
-    var projectItems = projectRoot.querySelectorAll(".project-list .project-item");
+    var projectList = projectRoot.querySelector(".project-list");
+    if (!projectList) return;
+
+    var projectItems = sortProjectList(projectList);
     if (!projectItems.length) return;
 
     var categories = [];
@@ -194,10 +275,213 @@
     });
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initProjectFilters);
-  } else {
+  function initProjectToolTags() {
+    document.querySelectorAll(".project-meta").forEach(function (meta) {
+      if (meta.dataset.toolsConverted === "true") return;
+
+      var text = meta.textContent.trim();
+      if (!text) return;
+
+      var tools = text
+        .split("·")
+        .map(function (tool) {
+          return tool.trim();
+        })
+        .filter(Boolean);
+
+      if (!tools.length) return;
+
+      var list = document.createElement("ul");
+      list.className = "project-tools";
+      list.setAttribute("aria-label", "Tools used");
+
+      tools.forEach(function (tool) {
+        var item = document.createElement("li");
+        item.textContent = tool;
+        list.appendChild(item);
+      });
+
+      meta.replaceWith(list);
+      list.dataset.toolsConverted = "true";
+    });
+  }
+
+  function initProjectDetailModal() {
+    var modal = document.getElementById("project-detail-modal");
+    if (!modal) return;
+
+    var titleEl = modal.querySelector("#project-modal-title");
+    var subtitleEl = modal.querySelector(".project-modal-subtitle");
+    var fieldEls = {
+      problem: modal.querySelector('[data-project-field="problem"]'),
+      built: modal.querySelector('[data-project-field="built"]'),
+      measured: modal.querySelector('[data-project-field="measured"]'),
+      impact: modal.querySelector('[data-project-field="impact"]'),
+    };
+
+    var PROJECT_DETAILS = {
+      "squad-sync": {
+        problem:
+          "Friends struggled to coordinate event planning across group chats, calendars, and shared docs.",
+        built:
+          "A full-stack web app for scheduling, planning, and hosting events together, vibe coded with Cursor, Claude, and deployed on Vercel.",
+        measured:
+          "Tracked adoption across friend groups, event completion rate, and time saved versus manual coordination.",
+        impact:
+          "Delivered a live demo-ready product that made group event planning faster and more structured.",
+      },
+      "picnic-teardown": {
+        problem:
+          "Needed a structured way to practice product thinking by breaking down an existing consumer product.",
+        built:
+          "A Picnic product teardown covering user journeys, empathy mapping, and product mindset development.",
+        measured:
+          "Evaluated clarity of insights, completeness of journey mapping, and quality of opportunity framing.",
+        impact:
+          "Built a repeatable teardown framework that strengthened product analysis skills.",
+      },
+      "canva-productathon": {
+        problem:
+          "Instagram creators lacked a way to preview how a feed would look before posting.",
+        built:
+          "A draft mode concept for visualising an Instagram feed pre-post, developed through a Canva x Prodigi productathon.",
+        measured:
+          "Used user journey mapping, empathy mapping, and competitor analysis to validate the concept.",
+        impact:
+          "Produced a productathon concept that showed how preview workflows could reduce posting friction.",
+      },
+      "gcp-migration": {
+        problem:
+          "Legacy AWS S3-based pipelines needed to move to Google Cloud without disrupting downstream reporting.",
+        built:
+          "An end-to-end GCP migration using Dataform, Airflow, Control-M, Bamboo, and Claude AI for pipeline development and support.",
+        measured:
+          "Monitored migration progress, pipeline reliability, job success rates, and downstream data freshness.",
+        impact:
+          "Migrated core workloads to GCP with a more maintainable orchestration stack.",
+      },
+      "bdm-trigger": {
+        problem:
+          "Broker trigger performance was difficult to evaluate without a reliable analytics pipeline.",
+        built:
+          "A BDM trigger data pipeline using ThoughtSpot, Alteryx, Python, and statistical analysis.",
+        measured:
+          "Tracked application completion rate, trigger completion rate, and pipeline refresh reliability.",
+        impact:
+          "Created an evaluation-ready pipeline that surfaced actionable broker performance insights.",
+      },
+      "ai-fraud": {
+        problem:
+          "Fraudulent home loan application patterns were hard to detect quickly across operational workflows.",
+        built:
+          "An AI-assisted fraud detection workflow using Google Copilot and Claude AI to surface suspicious behavioural patterns.",
+        measured:
+          "Reviewed flagged case quality, analyst review time, and precision of surfaced fraud signals.",
+        impact:
+          "Helped core operations teams identify fraudulent application behaviour faster.",
+      },
+      "alteryx-downstream": {
+        problem:
+          "Downstream reporting dependencies were unclear when upstream Alteryx workflows changed.",
+        built:
+          "An Alteryx downstream impact analysis using SQL and Claude AI to map workflow dependencies.",
+        measured:
+          "Tracked affected dashboards, downstream job coverage, and stakeholder validation of impact scope.",
+        impact:
+          "Improved visibility into downstream impact before workflow changes were released.",
+      },
+    };
+
+    var defaultDetail = {
+      problem: "Describe the core problem or challenge this project addressed.",
+      built: "Describe what was built end-to-end, including architecture, tooling, and delivery approach.",
+      measured: "Describe the metrics, tests, or evaluation methods used to measure success.",
+      impact: "Describe the final impact and result for users, stakeholders, or the business.",
+    };
+
+    var lastFocusedElement = null;
+
+    function getCardSummary(item) {
+      var title = item.querySelector(".project-card-title");
+      var date = item.querySelector(".project-date");
+      var desc = item.querySelector(".project-card-desc");
+      return {
+        title: title ? title.textContent.trim() : "Project",
+        subtitle: [
+          date ? date.textContent.trim() : "",
+          desc ? desc.textContent.trim() : "",
+        ]
+          .filter(Boolean)
+          .join(" · "),
+      };
+    }
+
+    function openModal(projectId, item) {
+      var summary = getCardSummary(item);
+      var details = PROJECT_DETAILS[projectId] || defaultDetail;
+
+      titleEl.textContent = summary.title;
+      subtitleEl.textContent = summary.subtitle;
+      fieldEls.problem.textContent = details.problem;
+      fieldEls.built.textContent = details.built;
+      fieldEls.measured.textContent = details.measured;
+      fieldEls.impact.textContent = details.impact;
+
+      lastFocusedElement = document.activeElement;
+      modal.hidden = false;
+      document.body.classList.add("project-modal-open");
+      modal.querySelector(".project-modal-close").focus();
+    }
+
+    function closeModal() {
+      modal.hidden = true;
+      document.body.classList.remove("project-modal-open");
+      if (lastFocusedElement && lastFocusedElement.focus) {
+        lastFocusedElement.focus();
+      }
+    }
+
+    document.querySelectorAll(".project-item[data-project-id]").forEach(function (item) {
+      var card = item.querySelector(".project-card--clickable");
+      if (!card) return;
+
+      var projectId = item.getAttribute("data-project-id");
+
+      function openFromCard(event) {
+        if (event.target.closest("a")) return;
+        openModal(projectId, item);
+      }
+
+      card.addEventListener("click", openFromCard);
+      card.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openModal(projectId, item);
+        }
+      });
+    });
+
+    modal.querySelectorAll("[data-close-modal]").forEach(function (el) {
+      el.addEventListener("click", closeModal);
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (modal.hidden) return;
+      if (event.key === "Escape") closeModal();
+    });
+  }
+
+  function initProjectsPage() {
+    initProjectToolTags();
+    initProjectLists();
     initProjectFilters();
+    initProjectDetailModal();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initProjectsPage);
+  } else {
+    initProjectsPage();
   }
 
 })();
