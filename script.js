@@ -156,28 +156,124 @@
     return parseDateValue(timeEl.getAttribute("datetime") || "0");
   }
 
-  function sortProjectList(projectList) {
-    var projectItems = Array.prototype.slice.call(
-      projectList.querySelectorAll(".project-item")
-    );
+  function getProjectYear(timeEl) {
+    if (!timeEl) return 0;
 
+    var groupYear = timeEl.getAttribute("data-group-year");
+    if (groupYear) return parseInt(groupYear, 10) || 0;
+
+    var text = timeEl.textContent.trim();
+    if (text.indexOf(" - ") !== -1) {
+      var startPart = text.split(" - ")[0].trim();
+      var startKey = parseDisplayDate(startPart);
+      if (startKey) return Math.floor(startKey / 100);
+    }
+
+    var datetime = timeEl.getAttribute("datetime");
+    if (datetime) {
+      var dtYear = parseInt(datetime.split("-")[0], 10);
+      if (dtYear) return dtYear;
+    }
+
+    var key = getProjectSortKey(timeEl);
+    return key ? Math.floor(key / 100) : 0;
+  }
+
+  function sortProjectItems(projectItems) {
     projectItems.sort(function (a, b) {
       var keyA = getProjectSortKey(a.querySelector(".project-date"));
       var keyB = getProjectSortKey(b.querySelector(".project-date"));
       return keyB - keyA;
     });
+    return projectItems;
+  }
+
+  function groupProjectListByYear(projectList) {
+    if (projectList.dataset.grouped === "true") {
+      return Array.prototype.slice.call(
+        projectList.closest(".project-timeline, .section-inner, main").querySelectorAll(
+          ".project-item"
+        )
+      );
+    }
+
+    var projectItems = sortProjectItems(
+      Array.prototype.slice.call(projectList.querySelectorAll(".project-item"))
+    );
+
+    var groups = {};
+    var yearOrder = [];
 
     projectItems.forEach(function (item) {
-      projectList.appendChild(item);
+      var year = getProjectYear(item.querySelector(".project-date"));
+      if (!groups[year]) {
+        groups[year] = [];
+        yearOrder.push(year);
+      }
+      groups[year].push(item);
     });
+
+    yearOrder.sort(function (a, b) {
+      return b - a;
+    });
+
+    var timeline = document.createElement("div");
+    timeline.className = "project-timeline";
+
+    yearOrder.forEach(function (year) {
+      var section = document.createElement("section");
+      section.className = "project-year-group";
+      section.setAttribute("data-year", String(year));
+
+      var marker = document.createElement("div");
+      marker.className = "project-year-marker";
+      var label = document.createElement("span");
+      label.className = "project-year-label";
+      label.textContent = year === 0 ? "Undated" : String(year);
+      marker.appendChild(label);
+
+      var list = document.createElement("ul");
+      list.className = "project-year-list";
+
+      groups[year].forEach(function (item) {
+        list.appendChild(item);
+      });
+
+      section.appendChild(marker);
+      section.appendChild(list);
+      timeline.appendChild(section);
+    });
+
+    projectList.replaceWith(timeline);
+    timeline.dataset.grouped = "true";
 
     return projectItems;
   }
 
+  function sortProjectList(projectList) {
+    if (projectList.classList.contains("project-timeline")) {
+      return sortProjectItems(
+        Array.prototype.slice.call(projectList.querySelectorAll(".project-item"))
+      );
+    }
+
+    if (projectList.dataset.grouped === "true") {
+      return Array.prototype.slice.call(projectList.querySelectorAll(".project-item"));
+    }
+
+    return groupProjectListByYear(projectList);
+  }
+
   function initProjectLists() {
-    var projectLists = document.querySelectorAll(".project-list");
-    projectLists.forEach(function (projectList) {
-      sortProjectList(projectList);
+    document.querySelectorAll(".section.projects .project-list").forEach(function (projectList) {
+      groupProjectListByYear(projectList);
+    });
+  }
+
+  function updateProjectYearGroups(root) {
+    root.querySelectorAll(".project-year-group").forEach(function (group) {
+      var visibleItems = group.querySelectorAll(".project-item:not([hidden])");
+      group.hidden = visibleItems.length === 0;
     });
   }
 
@@ -189,9 +285,14 @@
     if (!projectRoot) return;
 
     var projectList = projectRoot.querySelector(".project-list");
-    if (!projectList) return;
+    var timeline = projectRoot.querySelector(".project-timeline");
+    if (!projectList && !timeline) return;
 
-    var projectItems = sortProjectList(projectList);
+    var projectItems = projectList
+      ? groupProjectListByYear(projectList)
+      : sortProjectItems(
+          Array.prototype.slice.call(timeline.querySelectorAll(".project-item"))
+        );
     if (!projectItems.length) return;
 
     var categories = [];
@@ -239,6 +340,8 @@
         btn.classList.toggle("is-active", isActive);
         btn.setAttribute("aria-pressed", isActive ? "true" : "false");
       });
+
+      updateProjectYearGroups(projectRoot);
     }
 
     function createFilterButton(label, value) {

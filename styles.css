@@ -494,6 +494,67 @@ main p {
   display: none;
 }
 
+.project-timeline {
+  position: relative;
+  padding-left: 4.75rem;
+}
+
+.project-timeline::before {
+  content: "";
+  position: absolute;
+  left: 3.35rem;
+  top: 0.35rem;
+  bottom: 0;
+  width: 2px;
+  background: color-mix(in srgb, var(--accent) 35%, var(--border));
+  border-radius: 999px;
+}
+
+.project-year-group {
+  position: relative;
+  margin-bottom: 2.25rem;
+}
+
+.project-year-group:last-child {
+  margin-bottom: 0;
+}
+
+.project-year-group[hidden] {
+  display: none;
+}
+
+.project-year-marker {
+  position: absolute;
+  left: -4.75rem;
+  top: 0.15rem;
+  width: 2.75rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.project-year-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  line-height: 1.2;
+}
+
+.project-year-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 760px) {
+  .project-year-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 .project-list {
   list-style: none;
   margin: 0;
@@ -506,6 +567,25 @@ main p {
 @media (min-width: 760px) {
   .project-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 759px) {
+  .project-timeline {
+    padding-left: 4rem;
+  }
+
+  .project-timeline::before {
+    left: 2.85rem;
+  }
+
+  .project-year-marker {
+    left: -4rem;
+    width: 2.25rem;
+  }
+
+  .project-year-label {
+    font-size: 0.8125rem;
   }
 }
 
