@@ -928,9 +928,9 @@ body.project-modal-open {
   padding: 0.4rem 0.85rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text);
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
+  color: var(--tool-tag-text);
+  background: var(--tool-tag-bg);
+  border: 1px solid var(--tool-tag-border);
   border-radius: 999px;
   line-height: 1.3;
 }
