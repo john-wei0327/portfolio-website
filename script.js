@@ -453,6 +453,16 @@
         impact:
           "Produced a productathon concept that showed how preview workflows could reduce posting friction.",
       },
+      "customer-segmentation": {
+        problem:
+          "Marketing teams lacked a reliable way to segment customers without manual spreadsheet work.",
+        built:
+          "An Alteryx data pipeline to extract, transform, and load customer attributes into a Tableau audience visualisation dashboard, with Excel used for validation and ad hoc analysis.",
+        measured:
+          "Tracked pipeline refresh reliability, dashboard adoption, and accuracy of segmentation outputs against source data.",
+        impact:
+          "Enabled self-service customer segmentation and reduced reliance on one-off reporting requests.",
+      },
       "gcp-migration": {
         problem:
           "Legacy AWS S3-based pipelines needed to move to Google Cloud without disrupting downstream reporting.",
