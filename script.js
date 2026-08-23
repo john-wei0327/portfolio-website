@@ -322,10 +322,18 @@
 
     categories.sort();
 
+    function matchesActiveType(item) {
+      return activeType === "all" || item.dataset.projectType === activeType;
+    }
+
     function countForCategory(filter) {
-      if (filter === "all") return projectItems.length;
       var count = 0;
       projectItems.forEach(function (item) {
+        if (!matchesActiveType(item)) return;
+        if (filter === "all") {
+          count++;
+          return;
+        }
         var cats = (item.dataset.categories || "").split("|");
         if (cats.indexOf(filter) !== -1) count++;
       });
@@ -341,13 +349,22 @@
       return count;
     }
 
+    function updateCategoryCounts() {
+      filterContainer.querySelectorAll(".project-filter-btn").forEach(function (btn) {
+        var filter = btn.getAttribute("data-filter");
+        var countEl = btn.querySelector(".project-filter-count");
+        if (countEl) {
+          countEl.textContent = String(countForCategory(filter));
+        }
+      });
+    }
+
     function applyFilters() {
       projectItems.forEach(function (item) {
         var itemCategories = (item.dataset.categories || "").split("|");
         var categoryMatch =
           activeCategory === "all" || itemCategories.indexOf(activeCategory) !== -1;
-        var typeMatch =
-          activeType === "all" || item.dataset.projectType === activeType;
+        var typeMatch = matchesActiveType(item);
         item.hidden = !(categoryMatch && typeMatch);
       });
 
@@ -363,6 +380,7 @@
         btn.setAttribute("aria-pressed", isActive ? "true" : "false");
       });
 
+      updateCategoryCounts();
       updateProjectYearGroups(projectRoot);
     }
 
