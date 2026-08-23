@@ -430,8 +430,8 @@ main p {
 
 .project-filter-btn {
   display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
+  align-items: baseline;
+  gap: 0.35rem;
   padding: 0.45rem 0.9rem;
   appearance: none;
   -webkit-appearance: none;
@@ -469,11 +469,13 @@ main p {
 
 .project-filter-label {
   white-space: nowrap;
+  line-height: 1.2;
 }
 
 .project-filter-count {
   font-size: 0.75rem;
   font-weight: 600;
+  line-height: 1.2;
   color: color-mix(in srgb, var(--accent) 55%, var(--text-muted));
 }
 
@@ -809,16 +811,20 @@ body.project-modal-open {
   color: var(--text);
   flex: 1 1 12rem;
   min-width: 0;
+  line-height: 1.25;
 }
 
 .project-card-kind {
   flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 0.625rem;
   font-weight: 500;
   letter-spacing: 0.02em;
   color: var(--accent);
-  line-height: 1.2;
-  padding: 0.12rem 0.45rem 0.14rem;
+  line-height: 1;
+  padding: 0.2rem 0.45rem;
   background: color-mix(in srgb, var(--accent) 9%, var(--bg));
   border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--border));
   border-radius: 999px;
