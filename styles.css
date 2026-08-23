@@ -795,11 +795,34 @@ body.project-modal-open {
 
 .project-card-title-row {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem 0.5rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
   width: 100%;
-  margin: 0 0 0.2rem;
+}
+
+.project-card-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 0.5rem;
+  align-items: start;
+  width: 100%;
+}
+
+.project-card-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.project-card-kinds {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  flex-shrink: 0;
 }
 
 .project-card h2,
@@ -809,13 +832,11 @@ body.project-modal-open {
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--text);
-  flex: 1 1 12rem;
   min-width: 0;
   line-height: 1.25;
 }
 
 .project-card-kind {
-  flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -824,7 +845,7 @@ body.project-modal-open {
   letter-spacing: 0.02em;
   color: var(--accent);
   line-height: 1;
-  padding: 0.2rem 0.45rem;
+  padding: 0.3rem 0.6rem;
   background: color-mix(in srgb, var(--accent) 9%, var(--bg));
   border: 1px solid color-mix(in srgb, var(--accent) 16%, var(--border));
   border-radius: 999px;

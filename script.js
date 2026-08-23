@@ -298,7 +298,7 @@
     var categories = [];
 
     projectItems.forEach(function (item) {
-      var kinds = item.querySelectorAll(".project-card-title-row .project-card-kind");
+      var kinds = item.querySelectorAll(".project-card-kind");
       var itemCategories = [];
 
       kinds.forEach(function (kind) {
@@ -375,6 +375,48 @@
     filterContainer.appendChild(createFilterButton("All work", "all"));
     categories.forEach(function (category) {
       filterContainer.appendChild(createFilterButton(category, category));
+    });
+  }
+
+  function initProjectCardLayout() {
+    document.querySelectorAll(".project-card-main").forEach(function (main) {
+      if (main.dataset.layoutInit === "true") return;
+
+      var titleRow = main.querySelector(".project-card-title-row");
+      if (!titleRow) return;
+
+      var title = titleRow.querySelector(".project-card-title");
+      if (!title) return;
+
+      var kinds = Array.prototype.slice.call(
+        titleRow.querySelectorAll(".project-card-kind")
+      );
+      var date = main.querySelector(".project-date");
+
+      var header = document.createElement("div");
+      header.className = "project-card-header";
+
+      var heading = document.createElement("div");
+      heading.className = "project-card-heading";
+      heading.appendChild(title);
+      if (date) {
+        heading.appendChild(date);
+      }
+
+      header.appendChild(heading);
+
+      if (kinds.length) {
+        var kindsGroup = document.createElement("div");
+        kindsGroup.className = "project-card-kinds";
+        kinds.forEach(function (kind) {
+          kindsGroup.appendChild(kind);
+        });
+        header.appendChild(kindsGroup);
+      }
+
+      main.insertBefore(header, titleRow);
+      titleRow.remove();
+      main.dataset.layoutInit = "true";
     });
   }
 
@@ -585,6 +627,7 @@
   }
 
   function initProjectsPage() {
+    initProjectCardLayout();
     initProjectToolTags();
     initProjectLists();
     initProjectFilters();
