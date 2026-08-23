@@ -279,7 +279,8 @@
 
   function initProjectFilters() {
     var filterContainer = document.getElementById("project-filters");
-    if (!filterContainer) return;
+    var typeFilterContainer = document.getElementById("project-type-filters");
+    if (!filterContainer || !typeFilterContainer) return;
 
     var projectRoot = filterContainer.closest(".section-inner, .projects-inner, main");
     if (!projectRoot) return;
@@ -296,6 +297,8 @@
     if (!projectItems.length) return;
 
     var categories = [];
+    var activeCategory = "all";
+    var activeType = "all";
 
     projectItems.forEach(function (item) {
       var kinds = item.querySelectorAll(".project-card-kind");
@@ -312,12 +315,14 @@
       });
 
       item.dataset.categories = itemCategories.join("|");
+      if (!item.dataset.projectType) {
+        item.dataset.projectType = "professional";
+      }
     });
 
     categories.sort();
-    filterContainer.textContent = "";
 
-    function countForFilter(filter) {
+    function countForCategory(filter) {
       if (filter === "all") return projectItems.length;
       var count = 0;
       projectItems.forEach(function (item) {
@@ -327,16 +332,33 @@
       return count;
     }
 
-    function applyFilter(filter) {
+    function countForType(filter) {
+      if (filter === "all") return projectItems.length;
+      var count = 0;
+      projectItems.forEach(function (item) {
+        if (item.dataset.projectType === filter) count++;
+      });
+      return count;
+    }
+
+    function applyFilters() {
       projectItems.forEach(function (item) {
         var itemCategories = (item.dataset.categories || "").split("|");
-        var visible =
-          filter === "all" || itemCategories.indexOf(filter) !== -1;
-        item.hidden = !visible;
+        var categoryMatch =
+          activeCategory === "all" || itemCategories.indexOf(activeCategory) !== -1;
+        var typeMatch =
+          activeType === "all" || item.dataset.projectType === activeType;
+        item.hidden = !(categoryMatch && typeMatch);
       });
 
       filterContainer.querySelectorAll(".project-filter-btn").forEach(function (btn) {
-        var isActive = btn.getAttribute("data-filter") === filter;
+        var isActive = btn.getAttribute("data-filter") === activeCategory;
+        btn.classList.toggle("is-active", isActive);
+        btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+
+      typeFilterContainer.querySelectorAll(".project-type-toggle-btn").forEach(function (btn) {
+        var isActive = btn.getAttribute("data-type-filter") === activeType;
         btn.classList.toggle("is-active", isActive);
         btn.setAttribute("aria-pressed", isActive ? "true" : "false");
       });
@@ -344,7 +366,7 @@
       updateProjectYearGroups(projectRoot);
     }
 
-    function createFilterButton(label, value) {
+    function createCategoryFilterButton(label, value) {
       var btn = document.createElement("button");
       var labelEl = document.createElement("span");
       var countEl = document.createElement("span");
@@ -357,7 +379,7 @@
       labelEl.className = "project-filter-label";
       labelEl.textContent = label;
       countEl.className = "project-filter-count";
-      countEl.textContent = String(countForFilter(value));
+      countEl.textContent = String(countForCategory(value));
 
       btn.appendChild(labelEl);
       btn.appendChild(countEl);
@@ -367,15 +389,54 @@
       }
 
       btn.addEventListener("click", function () {
-        applyFilter(value);
+        activeCategory = value;
+        applyFilters();
       });
       return btn;
     }
 
-    filterContainer.appendChild(createFilterButton("All work", "all"));
+    function createTypeToggleButton(label, value) {
+      var btn = document.createElement("button");
+      var labelEl = document.createElement("span");
+      var countEl = document.createElement("span");
+
+      btn.type = "button";
+      btn.className = "project-type-toggle-btn";
+      btn.setAttribute("data-type-filter", value);
+      btn.setAttribute("aria-pressed", value === "all" ? "true" : "false");
+
+      labelEl.className = "project-type-toggle-label";
+      labelEl.textContent = label;
+      countEl.className = "project-type-toggle-count";
+      countEl.textContent = String(countForType(value));
+
+      btn.appendChild(labelEl);
+      btn.appendChild(countEl);
+
+      if (value === "all") {
+        btn.classList.add("is-active");
+      }
+
+      btn.addEventListener("click", function () {
+        activeType = value;
+        applyFilters();
+      });
+      return btn;
+    }
+
+    filterContainer.textContent = "";
+    typeFilterContainer.textContent = "";
+
+    typeFilterContainer.appendChild(createTypeToggleButton("All work", "all"));
+    typeFilterContainer.appendChild(createTypeToggleButton("Professional", "professional"));
+    typeFilterContainer.appendChild(createTypeToggleButton("Personal", "personal"));
+
+    filterContainer.appendChild(createCategoryFilterButton("All work", "all"));
     categories.forEach(function (category) {
-      filterContainer.appendChild(createFilterButton(category, category));
+      filterContainer.appendChild(createCategoryFilterButton(category, category));
     });
+
+    applyFilters();
   }
 
   function initProjectCardLayout() {

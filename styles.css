@@ -418,14 +418,94 @@ main p {
   max-width: 42ch;
 }
 
+.project-filter-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0 0 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.project-type-toggle {
+  display: inline-flex;
+  align-self: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.project-type-toggle-btn {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.45rem 0.9rem;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.project-type-toggle-btn:hover:not(.is-active) {
+  color: var(--text);
+}
+
+.project-type-toggle-btn.is-active {
+  color: var(--accent);
+  background: var(--filter-active-bg);
+  box-shadow: 0 1px 2px rgba(45, 74, 62, 0.08);
+}
+
+.project-type-toggle-label {
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.project-type-toggle-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--accent) 55%, var(--text-muted));
+}
+
+.project-type-toggle-btn:not(.is-active) .project-type-toggle-count {
+  color: var(--text-muted);
+}
+
+.project-type-toggle-btn:focus {
+  outline: none;
+}
+
+.project-type-toggle-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
 .project-filters {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
-  margin: 0 0 2.5rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid var(--border);
+  margin: 0;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 
 .project-filter-btn {

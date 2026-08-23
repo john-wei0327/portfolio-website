@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css?v=25" />
+    <link rel="stylesheet" href="styles.css?v=26" />
   </head>
   <body class="subpage">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -37,14 +37,22 @@
           <p class="page-intro">
             A sample of my work and projects
           </p>
-          <div
-            class="project-filters"
-            id="project-filters"
-            role="group"
-            aria-label="Filter projects by category"
-          ></div>
+          <div class="project-filter-toolbar">
+            <div
+              class="project-type-toggle"
+              id="project-type-filters"
+              role="group"
+              aria-label="Filter projects by type"
+            ></div>
+            <div
+              class="project-filters"
+              id="project-filters"
+              role="group"
+              aria-label="Filter projects by category"
+            ></div>
+          </div>
           <ul class="project-list">
-            <li class="project-item" data-project-id="squad-sync">
+            <li class="project-item" data-project-id="squad-sync" data-project-type="personal">
               <div
                 class="project-card project-card--clickable"
                 tabindex="0"
@@ -115,7 +123,7 @@
                 </div>
               </div>
             </li>
-            <li class="project-item" data-project-id="picnic-teardown">
+            <li class="project-item" data-project-id="picnic-teardown" data-project-type="personal">
               <div class="project-card project-card--clickable" tabindex="0" role="button" aria-label="Open Picnic Product Teardown details">
                 <div class="project-card-actions">
                   <!-- Second URL: case study, write-up, slides, repo, or other page -->
@@ -159,7 +167,7 @@
               </div>
             </li>
 
-            <li class="project-item" data-project-id="canva-productathon">
+            <li class="project-item" data-project-id="canva-productathon" data-project-type="personal">
               <div class="project-card project-card--clickable" tabindex="0" role="button" aria-label="Open Canva x Prodigi Productathon details">
                 <div class="project-card-actions">
                   <!-- Second URL: case study, write-up, slides, repo, or other page -->
@@ -203,7 +211,7 @@
               </div>
             </li>
 
-            <li class="project-item" data-project-id="customer-segmentation">
+            <li class="project-item" data-project-id="customer-segmentation" data-project-type="professional">
               <div
                 class="project-card project-card--clickable"
                 tabindex="0"
@@ -224,7 +232,7 @@
               </div>
             </li>
 
-            <li class="project-item" data-project-id="gcp-migration">
+            <li class="project-item" data-project-id="gcp-migration" data-project-type="professional">
               <div
                 class="project-card project-card--clickable"
                 tabindex="0"
@@ -247,7 +255,7 @@
               </div>
             </li>
 
-            <li class="project-item" data-project-id="bdm-trigger">
+            <li class="project-item" data-project-id="bdm-trigger" data-project-type="professional">
               <div
                 class="project-card project-card--clickable"
                 tabindex="0"
@@ -270,7 +278,7 @@
               </div>
             </li>
 
-            <li class="project-item" data-project-id="ai-fraud">
+            <li class="project-item" data-project-id="ai-fraud" data-project-type="professional">
               <div
                 class="project-card project-card--clickable"
                 tabindex="0"
@@ -291,7 +299,7 @@
               </div>
             </li>
 
-            <li class="project-item" data-project-id="alteryx-downstream">
+            <li class="project-item" data-project-id="alteryx-downstream" data-project-type="professional">
               <div
                 class="project-card project-card--clickable"
                 tabindex="0"
@@ -379,6 +387,6 @@
       </div>
     </div>
 
-    <script src="script.js?v=19"></script>
+    <script src="script.js?v=20"></script>
   </body>
 </html>
