@@ -427,7 +427,8 @@ main p {
   border-bottom: 1px solid var(--border);
 }
 
-.project-type-toggle {
+.project-type-toggle,
+.project-filters {
   display: inline-flex;
   align-self: flex-start;
   flex-wrap: wrap;
@@ -439,7 +440,8 @@ main p {
   border-radius: 999px;
 }
 
-.project-type-toggle-btn {
+.project-type-toggle-btn,
+.project-filter-btn {
   display: inline-flex;
   align-items: baseline;
   gap: 0.35rem;
@@ -463,95 +465,25 @@ main p {
     box-shadow 0.15s ease;
 }
 
-.project-type-toggle-btn:hover:not(.is-active) {
-  color: var(--text);
-}
-
-.project-type-toggle-btn.is-active {
-  color: var(--accent);
-  background: var(--filter-active-bg);
-  box-shadow: 0 1px 2px rgba(45, 74, 62, 0.08);
-}
-
-.project-type-toggle-label {
-  white-space: nowrap;
-  line-height: 1.2;
-}
-
-.project-type-toggle-count {
-  font-size: 0.75rem;
-  font-weight: 600;
-  line-height: 1.2;
-  color: color-mix(in srgb, var(--accent) 55%, var(--text-muted));
-}
-
-.project-type-toggle-btn:not(.is-active) .project-type-toggle-count {
-  color: var(--text-muted);
-}
-
-.project-type-toggle-btn:focus {
-  outline: none;
-}
-
-.project-type-toggle-btn:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.project-filters {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0;
-  padding-bottom: 0;
-  border-bottom: none;
-}
-
-.project-filter-btn {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.35rem;
-  padding: 0.45rem 0.9rem;
-  appearance: none;
-  -webkit-appearance: none;
-  font-family: inherit;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: 0.01em;
-  color: var(--text-muted);
-  background: var(--bg-elevated);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  cursor: pointer;
-  touch-action: manipulation;
-  position: relative;
-  z-index: 1;
-  transition:
-    color 0.15s ease,
-    background 0.15s ease,
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
-}
-
+.project-type-toggle-btn:hover:not(.is-active),
 .project-filter-btn:hover:not(.is-active) {
   color: var(--text);
-  border-color: color-mix(in srgb, var(--border) 160%, var(--text));
 }
 
+.project-type-toggle-btn.is-active,
 .project-filter-btn.is-active {
   color: var(--accent);
   background: var(--filter-active-bg);
-  border-color: var(--filter-active-border);
   box-shadow: 0 1px 2px rgba(45, 74, 62, 0.08);
 }
 
+.project-type-toggle-label,
 .project-filter-label {
   white-space: nowrap;
   line-height: 1.2;
 }
 
+.project-type-toggle-count,
 .project-filter-count {
   font-size: 0.75rem;
   font-weight: 600;
@@ -559,14 +491,17 @@ main p {
   color: color-mix(in srgb, var(--accent) 55%, var(--text-muted));
 }
 
+.project-type-toggle-btn:not(.is-active) .project-type-toggle-count,
 .project-filter-btn:not(.is-active) .project-filter-count {
   color: var(--text-muted);
 }
 
+.project-type-toggle-btn:focus,
 .project-filter-btn:focus {
   outline: none;
 }
 
+.project-type-toggle-btn:focus-visible,
 .project-filter-btn:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
