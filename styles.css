@@ -721,6 +721,70 @@ main p {
   color: var(--text-muted);
 }
 
+.project-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin: 1.5rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.project-modal-actions[hidden] {
+  display: none;
+}
+
+.project-modal-action-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.project-modal-action-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex-shrink: 0;
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--bg) 65%, var(--bg-elevated));
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.project-modal-action-row:hover .project-modal-action-icon,
+.project-modal-action-row:focus-visible .project-modal-action-icon {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 28%, var(--border));
+  background: var(--filter-active-bg);
+}
+
+.project-modal-action-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+
+.project-modal-action-row:hover .project-modal-action-label,
+.project-modal-action-row:focus-visible .project-modal-action-label {
+  color: var(--accent);
+}
+
+.project-modal-action-row:focus {
+  outline: none;
+}
+
+.project-modal-action-row:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
 .project-modal-body {
   display: flex;
   flex-direction: column;
@@ -749,14 +813,7 @@ body.project-modal-open {
 }
 
 .project-card-actions {
-  position: absolute;
-  top: 0.65rem;
-  right: 0.65rem;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
+  display: none !important;
 }
 
 .project-card-icon-link {
@@ -857,7 +914,7 @@ body.project-modal-open {
   align-items: flex-start;
   gap: 0.8rem;
   width: 100%;
-  padding: 0 2.75rem 0 0;
+  padding: 0;
 }
 
 .project-date {

@@ -420,6 +420,20 @@
     });
   }
 
+  function initProjectCardActions() {
+    document.querySelectorAll(".project-item").forEach(function (item) {
+      var card = item.querySelector(".project-card");
+      if (!card) return;
+
+      var actions = card.querySelector(".project-card-actions");
+      if (!actions || actions.dataset.moved === "true") return;
+
+      actions.hidden = true;
+      item.insertBefore(actions, item.firstChild);
+      actions.dataset.moved = "true";
+    });
+  }
+
   function initProjectToolTags() {
     document.querySelectorAll(".project-meta").forEach(function (meta) {
       if (meta.dataset.toolsConverted === "true") return;
@@ -457,6 +471,7 @@
 
     var titleEl = modal.querySelector("#project-modal-title");
     var subtitleEl = modal.querySelector(".project-modal-subtitle");
+    var actionsEl = modal.querySelector(".project-modal-actions");
     var fieldEls = {
       problem: modal.querySelector('[data-project-field="problem"]'),
       built: modal.querySelector('[data-project-field="built"]'),
@@ -571,12 +586,60 @@
       };
     }
 
+    function getActionLabel(link) {
+      var aria = (link.getAttribute("aria-label") || "").trim();
+      if (/write-up/i.test(aria)) return "View write-up";
+      if (/\bsite\b/i.test(aria)) return "View live site";
+      if (aria) return aria.replace(/^Open\s+/i, "");
+      return "Open link";
+    }
+
+    function populateModalActions(item) {
+      if (!actionsEl) return;
+
+      actionsEl.innerHTML = "";
+      actionsEl.hidden = true;
+
+      var sourceActions = item.querySelector(".project-card-actions");
+      if (!sourceActions) return;
+
+      var links = sourceActions.querySelectorAll("a[href]");
+      if (!links.length) return;
+
+      links.forEach(function (link) {
+        var row = document.createElement("a");
+        row.className = "project-modal-action-row";
+        row.href = link.href;
+        row.target = "_blank";
+        row.rel = "noopener noreferrer";
+        row.setAttribute("aria-label", link.getAttribute("aria-label") || getActionLabel(link));
+
+        var iconWrap = document.createElement("span");
+        iconWrap.className = "project-modal-action-icon";
+        var icon = link.querySelector("svg");
+        if (icon) {
+          iconWrap.appendChild(icon.cloneNode(true));
+        }
+
+        var label = document.createElement("span");
+        label.className = "project-modal-action-label";
+        label.textContent = getActionLabel(link);
+
+        row.appendChild(iconWrap);
+        row.appendChild(label);
+        actionsEl.appendChild(row);
+      });
+
+      actionsEl.hidden = false;
+    }
+
     function openModal(projectId, item) {
       var summary = getCardSummary(item);
       var details = PROJECT_DETAILS[projectId] || defaultDetail;
 
       titleEl.textContent = summary.title;
       subtitleEl.textContent = summary.subtitle;
+      populateModalActions(item);
       fieldEls.problem.textContent = details.problem;
       fieldEls.built.textContent = details.built;
       fieldEls.measured.textContent = details.measured;
@@ -628,6 +691,7 @@
 
   function initProjectsPage() {
     initProjectCardLayout();
+    initProjectCardActions();
     initProjectToolTags();
     initProjectLists();
     initProjectFilters();
