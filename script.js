@@ -552,89 +552,109 @@
     var subtitleEl = modal.querySelector(".project-modal-subtitle");
     var actionsEl = modal.querySelector(".project-modal-actions");
     var fieldEls = {
-      problem: modal.querySelector('[data-project-field="problem"]'),
-      built: modal.querySelector('[data-project-field="built"]'),
-      measured: modal.querySelector('[data-project-field="measured"]'),
+      context: modal.querySelector('[data-project-field="context-and-objective"]'),
+      methodology: modal.querySelector('[data-project-field="methodology"]'),
+      results: modal.querySelector('[data-project-field="results"]'),
       impact: modal.querySelector('[data-project-field="impact"]'),
     };
 
     var PROJECT_DETAILS = {
       "squad-sync": {
-        problem:
+        "context-and-objective":
           "Friends struggled to coordinate event planning across group chats, calendars, and shared docs.",
-        built:
+        methodology:
           "A full-stack web app for scheduling, planning, and hosting events together, vibe coded with Cursor, Claude, and deployed on Vercel.",
-        measured:
+        results:
           "Tracked adoption across friend groups, event completion rate, and time saved versus manual coordination.",
         impact:
           "Delivered a live demo-ready product that made group event planning faster and more structured.",
       },
       "picnic-teardown": {
-        problem:
+        "context-and-objective":
           "Needed a structured way to practice product thinking by breaking down an existing consumer product.",
-        built:
+        methodology:
           "A Picnic product teardown covering user journeys, empathy mapping, and product mindset development.",
-        measured:
+        results:
           "Evaluated clarity of insights, completeness of journey mapping, and quality of opportunity framing.",
         impact:
           "Built a repeatable teardown framework that strengthened product analysis skills.",
       },
       "canva-productathon": {
-        problem:
+        "context-and-objective":
           "Instagram creators lacked a way to preview how a feed would look before posting.",
-        built:
+        methodology:
           "A draft mode concept for visualising an Instagram feed pre-post, developed through a Canva x Prodigi productathon.",
-        measured:
+        results:
           "Used user journey mapping, empathy mapping, and competitor analysis to validate the concept.",
         impact:
           "Produced a productathon concept that showed how preview workflows could reduce posting friction.",
       },
       "customer-segmentation": {
-        problem:
+        "context-and-objective":
           "Marketing teams lacked a reliable way to segment customers without manual spreadsheet work.",
-        built:
+        methodology:
           "An Alteryx data pipeline to extract, transform, and load customer attributes into a Tableau audience visualisation dashboard, with Excel used for validation and ad hoc analysis.",
-        measured:
+        results:
           "Tracked pipeline refresh reliability, dashboard adoption, and accuracy of segmentation outputs against source data.",
         impact:
           "Enabled self-service customer segmentation and reduced reliance on one-off reporting requests.",
       },
       "gcp-migration": {
-        problem:
+        "context-and-objective":
           "Legacy AWS S3-based pipelines needed to move to Google Cloud without disrupting downstream reporting.",
-        built:
+        methodology:
           "An end-to-end GCP migration using Dataform, Airflow, Control-M, Bamboo, and Claude AI for pipeline development and support.",
-        measured:
+        results:
           "Monitored migration progress, pipeline reliability, job success rates, and downstream data freshness.",
         impact:
           "Migrated core workloads to GCP with a more maintainable orchestration stack.",
       },
+      "aggregator-pipeline": {
+        "context-and-objective":
+          "Third-party aggregator data for verifying home loan customer information was arriving manually as Excel files, with no defined structure or automated process.",
+        methodology:
+          "Investigated the data's frequency and content, designed a target structure, and built a pipeline to receive, transform, and load it automatically.",
+        results:
+          "Replaced a manual, ad hoc process with a repeatable, automated pipeline.",
+        impact:
+          "Removed a manual bottleneck and made third-party data reliably available for downstream use in loan processing.",
+      },
       "bdm-trigger": {
-        problem:
+        "context-and-objective":
           "Broker trigger performance was difficult to evaluate without a reliable analytics pipeline.",
-        built:
+        methodology:
           "A BDM trigger data pipeline using ThoughtSpot, Alteryx, Python, and statistical analysis.",
-        measured:
+        results:
           "Tracked application completion rate, trigger completion rate, and pipeline refresh reliability.",
         impact:
           "Created an evaluation-ready pipeline that surfaced actionable broker performance insights.",
       },
+      "trigger-ab-testing": {
+        "context-and-objective":
+          "A trigger system flagging at-risk home loan applications lifted broker follow-up action from 30% to 80% — but did that operational win actually drive more completed loans, or could the volume increase have other explanations?",
+        methodology:
+          "Tested the causal impact using both frequentist and Bayesian A/B testing approaches in Python, comparing loan volume for intervention vs. non-intervention cohorts.",
+        results:
+          "Inconclusive — sample size was too small to detect statistical significance under either framework, despite the strong operational uplift.",
+        impact:
+          "Leadership continued the rollout based on the operational uplift, while treating the volume/revenue link as an unconfirmed hypothesis rather than overstating impact.",
+      },
       "ai-fraud": {
-        problem:
+        "context-and-objective":
           "Fraudulent home loan application patterns were hard to detect quickly across operational workflows.",
-        built:
+        methodology:
           "An AI-assisted fraud detection workflow using Google Copilot and Claude AI to surface suspicious behavioural patterns.",
-        measured:
+        results:
           "Reviewed flagged case quality, analyst review time, and precision of surfaced fraud signals.",
         impact:
           "Helped core operations teams identify fraudulent application behaviour faster.",
       },
       "alteryx-downstream": {
-        problem:
-          "Downstream reporting dependencies were unclear when upstream Alteryx workflows changed.",
-        built:
-          "An Alteryx downstream impact analysis using SQL and Claude AI to map workflow dependencies.",
-        measured:
+        "context-and-objective":
+          "Database updates for an automated home loan screening system risked breaking downstream reporting pipelines and core business metrics due to unmapped data dependencies.",
+        methodology:
+          "Developed a data lineage mapping tool using Alteryx, SQL and Claude AI to dissect complex Alteryx workflows and output self-service flowchart diagrams. Implemented an additive feature-flagging strategy in output schemas and historical partition filters, preserving baseline metric integrity while enabling fine-grained tracking.",
+        results:
           "Tracked affected dashboards, downstream job coverage, and stakeholder validation of impact scope.",
         impact:
           "Improved visibility into downstream impact before workflow changes were released.",
@@ -642,9 +662,9 @@
     };
 
     var defaultDetail = {
-      problem: "Describe the core problem or challenge this project addressed.",
-      built: "Describe what was built end-to-end, including architecture, tooling, and delivery approach.",
-      measured: "Describe the metrics, tests, or evaluation methods used to measure success.",
+      "context-and-objective": "Describe the context and objective this project addressed.",
+      methodology: "Describe the methodology used, including architecture, tooling, and delivery approach.",
+      results: "Describe the results, metrics, tests, or evaluation findings.",
       impact: "Describe the final impact and result for users, stakeholders, or the business.",
     };
 
@@ -719,9 +739,9 @@
       titleEl.textContent = summary.title;
       subtitleEl.textContent = summary.subtitle;
       populateModalActions(item);
-      fieldEls.problem.textContent = details.problem;
-      fieldEls.built.textContent = details.built;
-      fieldEls.measured.textContent = details.measured;
+      fieldEls.context.textContent = details["context-and-objective"];
+      fieldEls.methodology.textContent = details.methodology;
+      fieldEls.results.textContent = details.results;
       fieldEls.impact.textContent = details.impact;
 
       lastFocusedElement = document.activeElement;
