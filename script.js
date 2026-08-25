@@ -591,23 +591,23 @@
       },
       "customer-segmentation": {
         "context-and-objective":
-          "Marketing teams lacked a reliable way to segment customers without manual spreadsheet work.",
+          "The organization lacked a self-service tool to filter, isolate, and perform granular side-by-side comparative analysis between distinct customer cohorts stored in a wide data mart.",
         methodology:
-          "An Alteryx data pipeline to extract, transform, and load customer attributes into a Tableau audience visualisation dashboard, with Excel used for validation and ad hoc analysis.",
+          "Built an Alteryx ETL pipeline to extract, aggregate, and batch-load multi-dimensional customer data into Tableau daily. Designed an interactive dashboard enabling stakeholders to run side-by-side demographic comparisons across target customer segments.",
         results:
           "Tracked pipeline refresh reliability, dashboard adoption, and accuracy of segmentation outputs against source data.",
         impact:
-          "Enabled self-service customer segmentation and reduced reliance on one-off reporting requests.",
+          "Delivered a proof-of-concept demonstrating the feasibility of self-service audience profiling and comparative cohort analysis for business stakeholders.",
       },
       "gcp-migration": {
         "context-and-objective":
-          "Legacy AWS S3-based pipelines needed to move to Google Cloud without disrupting downstream reporting.",
+          "Migrate legacy AWS S3 data tables to Google Cloud Platform (BigQuery) without disrupting daily operational reporting or downstream SLA commitments.",
         methodology:
-          "An end-to-end GCP migration using Dataform, Airflow, Control-M, Bamboo, and Claude AI for pipeline development and support.",
+          "Architected automated migration pipelines leveraging Bamboo, Python, Dataform, and Airflow DAG templates. Built custom Python profiling tools via Claude AI to determine source data grain and separate historical backfills from daily incremental loads to run asynchronously.",
         results:
           "Monitored migration progress, pipeline reliability, job success rates, and downstream data freshness.",
         impact:
-          "Migrated core workloads to GCP with a more maintainable orchestration stack.",
+          "Reduced per-table migration turnaround from 2 weeks to 3–4 days, successfully migrating over 80% of all major enterprise runstreams.",
       },
       "aggregator-pipeline": {
         "context-and-objective":
@@ -621,13 +621,13 @@
       },
       "bdm-trigger": {
         "context-and-objective":
-          "Broker trigger performance was difficult to evaluate without a reliable analytics pipeline.",
+          "Business Development Managers (BDMs) required a centralized, automated system to trigger targeted broker outreach and measure statistical impact on loan application volume and value.",
         methodology:
-          "A BDM trigger data pipeline using ThoughtSpot, Alteryx, Python, and statistical analysis.",
+          "Built an end-to-end trigger orchestration pipeline using Alteryx, Python, GCP, and ThoughtSpot. Integrated modular business logic to assign test/control groups, enforce priority filtering, and maintain a 60-day contact exclusion window. Built inline data quality controls, automated daily alert summaries, and a Bayesian/Frequentist statistical framework to analyze incremental lift.",
         results:
           "Tracked application completion rate, trigger completion rate, and pipeline refresh reliability.",
         impact:
-          "Created an evaluation-ready pipeline that surfaced actionable broker performance insights.",
+          "Delivered a scalable infrastructure that remains in production two years later, expanding to support 15+ active triggers and ongoing executive performance tracking.",
       },
       "trigger-ab-testing": {
         "context-and-objective":
@@ -641,13 +641,13 @@
       },
       "ai-fraud": {
         "context-and-objective":
-          "Fraudulent home loan application patterns were hard to detect quickly across operational workflows.",
+          "Surging AI-driven home loan application fraud created a need for faster, higher-precision risk triaging to assist operations teams.",
         methodology:
-          "An AI-assisted fraud detection workflow using Google Copilot and Claude AI to surface suspicious behavioural patterns.",
+          "Engineered a multi-dimensional fraud research workflow using Claude AI and Google Copilot. Combined public registry data (ABS, ATO, ABR) across 10 verification dimensions with internal pattern-recognition tools to construct composite entity likelihood scores and flag high-risk anomalies (e.g., shared collateral, sanctioned entity associations).",
         results:
           "Reviewed flagged case quality, analyst review time, and precision of surfaced fraud signals.",
         impact:
-          "Helped core operations teams identify fraudulent application behaviour faster.",
+          "Streamlined initial fraud triage for operations teams, laying the architectural blueprint for an automated risk-scoring and escalation pipeline.",
       },
       "alteryx-downstream": {
         "context-and-objective":
@@ -657,7 +657,7 @@
         results:
           "Tracked affected dashboards, downstream job coverage, and stakeholder validation of impact scope.",
         impact:
-          "Improved visibility into downstream impact before workflow changes were released.",
+          "Reduced manual analysis overhead and completed dependency mapping two weeks ahead of schedule, allowing downstream reporting updates to go live early alongside production releases.",
       },
     };
 
