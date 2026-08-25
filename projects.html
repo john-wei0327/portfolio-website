@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=27" />
   </head>
   <body class="subpage">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -37,11 +37,29 @@
           <p class="page-intro">
             A sample of my work and projects
           </p>
+          <div class="project-filter-toolbar">
+            <div
+              class="project-type-toggle"
+              id="project-type-filters"
+              role="group"
+              aria-label="Filter projects by type"
+            ></div>
+            <div
+              class="project-filters"
+              id="project-filters"
+              role="group"
+              aria-label="Filter projects by category"
+            ></div>
+          </div>
           <ul class="project-list">
-            <li class="project-item">
-              <div class="project-card">
+            <li class="project-item" data-project-id="squad-sync" data-project-type="personal">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open Community Event Planning Web App details"
+              >
                 <div class="project-card-actions">
-                  <!-- Primary project URL: live app, demo, main portfolio entry, etc. -->
                   <a
                     class="project-card-icon-link"
                     href="https://hello-squad-sync.lovable.app/"
@@ -67,7 +85,6 @@
                       <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
                     </svg>
                   </a>
-                  <!-- Second URL: case study, write-up, slides, repo, or other page -->
                   <a
                     class="project-card-icon-link"
                     href="https://luxuriant-message-c8d.notion.site/Squad-Sync-334bb85e918f808fab52d0aa425eabe5?pvs=73"
@@ -93,7 +110,6 @@
                   </a>
                 </div>
                 <div class="project-card-main">
-                  <!-- Category: edit text inside <span class="project-card-kind"> -->
                   <div class="project-card-title-row">
                     <h2 class="project-card-title">Community Event Planning Web App</h2>
                     <span class="project-card-kind">Product</span>
@@ -107,8 +123,8 @@
                 </div>
               </div>
             </li>
-            <li class="project-item">
-              <div class="project-card">
+            <li class="project-item" data-project-id="picnic-teardown" data-project-type="personal">
+              <div class="project-card project-card--clickable" tabindex="0" role="button" aria-label="Open Picnic Product Teardown details">
                 <div class="project-card-actions">
                   <!-- Second URL: case study, write-up, slides, repo, or other page -->
                   <a
@@ -116,7 +132,7 @@
                     href="https://luxuriant-message-c8d.notion.site/Picnic-Product-Teardown-334bb85e918f80eb9b4ad5563f2846f0"
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label="Open Canva x Prodigi Productathon write-up"
+                    aria-label="Open Picnic Product Teardown write-up"
                   >
                     <svg
                       class="project-card-link-icon"
@@ -140,7 +156,7 @@
                     <h2 class="project-card-title">Picnic Product Teardown</h2>
                     <span class="project-card-kind">Product</span>
                   </div>
-                  <time class="project-date" datetime="2026">2026</time>
+                  <time class="project-date" datetime="2026-04">April 2026</time>
                   <p class="project-meta">
                     Product Teardown · User Journey · Empathy Mapping
                   </p>
@@ -151,8 +167,8 @@
               </div>
             </li>
 
-            <li class="project-item">
-              <div class="project-card">
+            <li class="project-item" data-project-id="canva-productathon" data-project-type="personal">
+              <div class="project-card project-card--clickable" tabindex="0" role="button" aria-label="Open Canva x Prodigi Productathon details">
                 <div class="project-card-actions">
                   <!-- Second URL: case study, write-up, slides, repo, or other page -->
                   <a
@@ -194,6 +210,165 @@
                 </div>
               </div>
             </li>
+
+            <li class="project-item" data-project-id="customer-segmentation" data-project-type="professional">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open Customer Segmentation Visualiser Data Pipeline details"
+              >
+                <div class="project-card-main">
+                  <div class="project-card-title-row">
+                    <h2 class="project-card-title">Customer Segmentation Visualiser Data Pipeline</h2>
+                    <span class="project-card-kind">Data Analytics</span>
+                  </div>
+                  <time class="project-date" datetime="2022-12">December 2022 - February 2023</time>
+                  <p class="project-meta">Tableau · Alteryx · Excel</p>
+                  <p class="project-card-desc">
+                    Built an Alteryx pipeline to load customer attributes into a Tableau audience dashboard for self-service segmentation.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="project-item" data-project-id="gcp-migration" data-project-type="professional">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open GCP Data Migration details"
+              >
+                <div class="project-card-main">
+                  <div class="project-card-title-row">
+                    <h2 class="project-card-title">GCP Data Migration</h2>
+                    <span class="project-card-kind">Data Engineering</span>
+                  </div>
+                  <time class="project-date" datetime="2025-03">March 2025 - February 2026</time>
+                  <p class="project-meta">
+                    GCP Dataform · Airflow · Control-M · Bamboo · Claude AI
+                  </p>
+                  <p class="project-card-desc">
+                    Legacy AWS S3-based pipelines needed to move to Google Cloud without disrupting downstream reporting.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="project-item" data-project-id="aggregator-pipeline" data-project-type="professional">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open Building a New Pipeline for Third-Party Aggregator Data details"
+              >
+                <div class="project-card-main">
+                  <div class="project-card-title-row">
+                    <h2 class="project-card-title">
+                      Building a New Pipeline for Third-Party Aggregator Data
+                    </h2>
+                    <span class="project-card-kind">Data Engineering</span>
+                  </div>
+                  <time class="project-date" datetime="2025-07">July 2025</time>
+                  <p class="project-meta">
+                    GCP Dataform · Airflow · Control-M · Bamboo
+                  </p>
+                  <p class="project-card-desc">
+                    Third-party aggregator data for verifying home loan customer information was arriving manually as Excel files, with no defined structure or automated process.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="project-item" data-project-id="bdm-trigger" data-project-type="professional">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open BDM Trigger Data Pipeline details"
+              >
+                <div class="project-card-main">
+                  <div class="project-card-title-row">
+                    <h2 class="project-card-title">BDM Trigger Data Pipeline</h2>
+                    <span class="project-card-kind">Data Analytics</span>
+                  </div>
+                  <time class="project-date" datetime="2024-07">July 2024 - October 2024</time>
+                  <p class="project-meta">
+                    ThoughtSpot · Alteryx 
+                  </p>
+                  <p class="project-card-desc">
+                    Broker trigger performance was difficult to evaluate without a reliable analytics pipeline.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="project-item" data-project-id="trigger-ab-testing" data-project-type="professional">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open Trigger-Based Intervention A/B Testing details"
+              >
+                <div class="project-card-main">
+                  <div class="project-card-title-row">
+                    <h2 class="project-card-title">
+                      Trigger-Based Intervention - A/B Testing (Frequentist vs. Bayesian)
+                    </h2>
+                    <span class="project-card-kind">Data Analytics</span>
+                  </div>
+                  <time class="project-date" datetime="2024-07">July 2024 - October 2024</time>
+                  <p class="project-meta">Python · Statistics</p>
+                  <p class="project-card-desc">
+                    A trigger system flagging at-risk home loan applications lifted broker follow-up action from 30% to 80% — but did that operational win actually drive more completed loans?
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="project-item" data-project-id="ai-fraud" data-project-type="professional">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open AI Network Fraud Detection details"
+              >
+                <div class="project-card-main">
+                  <div class="project-card-title-row">
+                    <h2 class="project-card-title">AI Network Fraud Detection</h2>
+                    <span class="project-card-kind">Data Analytics</span>
+                  </div>
+                  <time class="project-date" datetime="2026-04">April 2026</time>
+                  <p class="project-meta">Google Copilot · Claude AI</p>
+                  <p class="project-card-desc">
+                    Fraudulent home loan application patterns were hard to detect quickly across operational workflows.
+                  </p>
+                </div>
+              </div>
+            </li>
+
+            <li class="project-item" data-project-id="alteryx-downstream" data-project-type="professional">
+              <div
+                class="project-card project-card--clickable"
+                tabindex="0"
+                role="button"
+                aria-label="Open Alteryx Downstream Impact Analysis details"
+              >
+                <div class="project-card-main">
+                  <div class="project-card-title-row">
+                    <h2 class="project-card-title">
+                      Alteryx Downstream Impact Analysis
+                    </h2>
+                    <span class="project-card-kind">Data Analytics</span>
+                  </div>
+                  <time class="project-date" datetime="2026-05">May 2026</time>
+                  <p class="project-meta">Alteryx · Claude AI · SQL</p>
+                  <p class="project-card-desc">
+                    Downstream reporting dependencies were unclear when upstream Alteryx workflows changed.
+                  </p>
+                </div>
+              </div>
+            </li>
           </ul>
         </div>
       </section>
@@ -216,6 +391,50 @@
       </div>
     </footer>
 
-    <script src="script.js"></script>
+    <div class="project-modal" id="project-detail-modal" hidden>
+      <div class="project-modal-backdrop" data-close-modal></div>
+      <div
+        class="project-modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="project-modal-title"
+      >
+        <header class="project-modal-header">
+          <div class="project-modal-heading">
+            <h2 id="project-modal-title" class="project-modal-title"></h2>
+            <p class="project-modal-subtitle"></p>
+          </div>
+          <button
+            type="button"
+            class="project-modal-close"
+            aria-label="Close project details"
+            data-close-modal
+          >
+            Close
+          </button>
+        </header>
+        <div class="project-modal-body">
+          <section class="project-modal-section">
+            <h3>Context and Objective</h3>
+            <p data-project-field="context-and-objective"></p>
+          </section>
+          <section class="project-modal-section">
+            <h3>Methodology</h3>
+            <p data-project-field="methodology"></p>
+          </section>
+          <section class="project-modal-section">
+            <h3>Results</h3>
+            <p data-project-field="results"></p>
+          </section>
+          <section class="project-modal-section">
+            <h3>Impact</h3>
+            <p data-project-field="impact"></p>
+          </section>
+        </div>
+        <div class="project-modal-actions" hidden aria-label="Project links"></div>
+      </div>
+    </div>
+
+    <script src="script.js?v=24"></script>
   </body>
 </html>
