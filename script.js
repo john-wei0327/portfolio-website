@@ -797,10 +797,14 @@
     initProjectDetailModal();
   }
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initProjectsPage);
-  } else {
+  function initSite() {
     initProjectsPage();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSite);
+  } else {
+    initSite();
   }
 
 })();
