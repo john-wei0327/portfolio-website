@@ -101,6 +101,7 @@ main p {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
+  align-items: baseline;
   gap: 0.5rem 1.25rem;
 }
 
@@ -123,15 +124,12 @@ main p {
 
 .nav-dropdown {
   position: relative;
+  display: flex;
+  align-items: baseline;
 }
 
 .nav-dropdown-label {
-  display: inline-block;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color 0.15s ease;
+  line-height: inherit;
 }
 
 .nav-dropdown-label[aria-current="page"] {
