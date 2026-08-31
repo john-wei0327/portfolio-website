@@ -541,12 +541,11 @@ body.fun-mode-on .fun-word:focus-visible {
   transform-origin: center center;
   opacity: 1;
   will-change: transform, opacity;
-  transition: opacity 7.5s linear;
+  transition: opacity 3s linear;
 }
 
 .fun-float-item.is-fading {
   opacity: 0;
-  pointer-events: none;
 }
 
 .fun-float-item[hidden] {

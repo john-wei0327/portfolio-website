@@ -824,7 +824,8 @@
     var reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
-    var FADE_MS = reduceMotion ? 800 : 4500;
+    var HOLD_MS = 5000;
+    var FADE_MS = reduceMotion ? 800 : 3000;
     var wordButtons = Array.prototype.slice.call(
       document.querySelectorAll(".fun-word")
     );
@@ -962,13 +963,17 @@
     }
 
     function cancelFade(body) {
-      if (!body.fading) return;
-      body.fading = false;
-      body.el.classList.remove("is-fading");
+      if (body.holdTimer) {
+        window.clearTimeout(body.holdTimer);
+        body.holdTimer = 0;
+      }
       if (body.fadeTimer) {
         window.clearTimeout(body.fadeTimer);
         body.fadeTimer = 0;
       }
+      if (!body.fading) return;
+      body.fading = false;
+      body.el.classList.remove("is-fading");
     }
 
     function removeBody(body) {
@@ -993,6 +998,17 @@
       timeouts.push(body.fadeTimer);
     }
 
+    function scheduleFadeOut(body) {
+      if (!body.active || body.fading || body.holdTimer || body.el.hidden) {
+        return;
+      }
+      body.holdTimer = window.setTimeout(function () {
+        body.holdTimer = 0;
+        startFadeOut(body);
+      }, HOLD_MS);
+      timeouts.push(body.holdTimer);
+    }
+
     function pruneDuplicates() {
       var byKind = {};
       bodies.forEach(function (body) {
@@ -1007,7 +1023,7 @@
           return a.born - b.born;
         });
         cancelFade(group[0]);
-        group.slice(1).forEach(startFadeOut);
+        group.slice(1).forEach(scheduleFadeOut);
       });
     }
 
@@ -1021,6 +1037,7 @@
       body.vy = vel.vy;
       body.el.classList.remove("is-popping");
       body.el.style.opacity = "";
+      body.el.style.transition = "";
       renderBody(body);
       body.el.hidden = false;
       body.active = true;
@@ -1028,20 +1045,30 @@
     }
 
     function popBody(body) {
-      if (!body.active || !running || body.fading) return;
+      if (!body.active || !running) return;
+      cancelFade(body);
+      body.el.style.transition = "none";
       body.active = false;
       body.el.classList.add("is-popping");
       var hideId = window.setTimeout(function () {
         if (!running) return;
+        if (body.ephemeral) {
+          removeBody(body);
+          pruneDuplicates();
+          return;
+        }
         body.el.hidden = true;
         body.el.classList.remove("is-popping");
         body.el.style.opacity = "";
+        body.el.style.transition = "";
         pruneDuplicates();
       }, POP_MS);
+      timeouts.push(hideId);
+      if (body.ephemeral) return;
       var spawnId = window.setTimeout(function () {
         respawn(body);
       }, POP_MS + GONE_MS);
-      timeouts.push(hideId, spawnId);
+      timeouts.push(spawnId);
     }
 
     function addBody(item, options) {
@@ -1064,6 +1091,7 @@
         kind: item.id,
         ephemeral: !!options.ephemeral,
         fading: false,
+        holdTimer: 0,
         fadeTimer: 0,
         born: Date.now(),
         x: pos.x,
