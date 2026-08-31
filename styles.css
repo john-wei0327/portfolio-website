@@ -539,7 +539,14 @@ body.fun-mode-on .fun-word:focus-visible {
   line-height: 1;
   user-select: none;
   transform-origin: center center;
+  opacity: 1;
   will-change: transform, opacity;
+  transition: opacity 7.5s linear;
+}
+
+.fun-float-item.is-fading {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .fun-float-item[hidden] {
@@ -591,6 +598,10 @@ body.fun-mode-on .fun-word:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .fun-float-item {
+    transition-duration: 0.8s;
+  }
+
   .fun-float-item.is-popping {
     animation-duration: 0.01ms;
   }

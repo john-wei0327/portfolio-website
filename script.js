@@ -821,6 +821,10 @@
       pottery: ["pottery-mugs"],
     };
     var MAX_BODIES = 40;
+    var reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    var FADE_MS = reduceMotion ? 800 : 4500;
     var wordButtons = Array.prototype.slice.call(
       document.querySelectorAll(".fun-word")
     );
@@ -943,6 +947,56 @@
       rafId = window.requestAnimationFrame(tick);
     }
 
+    function cancelFade(body) {
+      if (!body.fading) return;
+      body.fading = false;
+      body.el.classList.remove("is-fading");
+      if (body.fadeTimer) {
+        window.clearTimeout(body.fadeTimer);
+        body.fadeTimer = 0;
+      }
+    }
+
+    function removeBody(body) {
+      if (!running) return;
+      cancelFade(body);
+      var index = bodies.indexOf(body);
+      if (index !== -1) bodies.splice(index, 1);
+      if (body.el && body.el.parentNode) {
+        body.el.parentNode.removeChild(body.el);
+      }
+    }
+
+    function startFadeOut(body) {
+      if (!body.active || body.fading || body.el.hidden) return;
+      body.fading = true;
+      body.el.classList.remove("is-fading");
+      void body.el.offsetWidth;
+      body.el.classList.add("is-fading");
+      body.fadeTimer = window.setTimeout(function () {
+        removeBody(body);
+      }, FADE_MS);
+      timeouts.push(body.fadeTimer);
+    }
+
+    function pruneDuplicates() {
+      var byKind = {};
+      bodies.forEach(function (body) {
+        if (!body.active || body.el.hidden) return;
+        if (!byKind[body.kind]) byKind[body.kind] = [];
+        byKind[body.kind].push(body);
+      });
+      Object.keys(byKind).forEach(function (kind) {
+        var group = byKind[kind];
+        group.sort(function (a, b) {
+          if (a.ephemeral !== b.ephemeral) return a.ephemeral ? 1 : -1;
+          return a.born - b.born;
+        });
+        cancelFade(group[0]);
+        group.slice(1).forEach(startFadeOut);
+      });
+    }
+
     function respawn(body) {
       if (!running) return;
       var pos = randomPosition();
@@ -956,10 +1010,11 @@
       renderBody(body);
       body.el.hidden = false;
       body.active = true;
+      pruneDuplicates();
     }
 
     function popBody(body) {
-      if (!body.active || !running) return;
+      if (!body.active || !running || body.fading) return;
       body.active = false;
       body.el.classList.add("is-popping");
       var hideId = window.setTimeout(function () {
@@ -967,6 +1022,7 @@
         body.el.hidden = true;
         body.el.classList.remove("is-popping");
         body.el.style.opacity = "";
+        pruneDuplicates();
       }, POP_MS);
       var spawnId = window.setTimeout(function () {
         respawn(body);
@@ -974,7 +1030,8 @@
       timeouts.push(hideId, spawnId);
     }
 
-    function addBody(item) {
+    function addBody(item, options) {
+      options = options || {};
       var button = document.createElement("button");
       button.type = "button";
       button.className = "fun-float-item";
@@ -990,6 +1047,11 @@
       var vel = randomVelocity();
       var body = {
         el: button,
+        kind: item.id,
+        ephemeral: !!options.ephemeral,
+        fading: false,
+        fadeTimer: 0,
+        born: Date.now(),
         x: pos.x,
         y: pos.y,
         vx: vel.vx,
@@ -1002,22 +1064,17 @@
         popBody(body);
       });
       bodies.push(body);
+      if (options.ephemeral) pruneDuplicates();
       return body;
     }
 
     function spawnFromWord(kind) {
-      if (!running) return;
+      if (!running || bodies.length >= MAX_BODIES) return;
       var ids = SPAWN_MAP[kind];
-      if (!ids) return;
-      ids.forEach(function (id) {
-        if (bodies.length >= MAX_BODIES) return;
-        var item = ITEM_BY_ID[id];
-        if (item) addBody(item);
-      });
-      if (ids.length === 1 && bodies.length < MAX_BODIES) {
-        var extra = ITEM_BY_ID[ids[0]];
-        if (extra) addBody(extra);
-      }
+      if (!ids || !ids.length) return;
+      var id = ids[Math.floor(Math.random() * ids.length)];
+      var item = ITEM_BY_ID[id];
+      if (item) addBody(item, { ephemeral: true });
     }
 
     function setWordButtonsEnabled(enabled) {
@@ -1031,7 +1088,6 @@
       layer.innerHTML = "";
       bodies = [];
       FUN_ITEMS.forEach(function (item) {
-        if (item.id === "dancing") return;
         addBody(item);
       });
     }
