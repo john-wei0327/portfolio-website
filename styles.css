@@ -361,11 +361,18 @@ main p {
   gap: 1rem;
 }
 
-.about-copy {
+.about-copy-stack,
+.about-details {
+  text-align: justify;
+}
+
+.about .about-copy {
   margin: 0;
   font: inherit;
   color: var(--text-muted);
-  text-align: left;
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-word;
 }
 
 .about-details .about-copy {
