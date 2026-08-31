@@ -355,6 +355,12 @@ main p {
   }
 }
 
+.about-copy-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .about-copy {
   margin: 0;
   font: inherit;
