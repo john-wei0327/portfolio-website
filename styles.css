@@ -390,6 +390,8 @@ main p {
   appearance: none;
   -webkit-appearance: none;
   display: inline;
+  position: relative;
+  z-index: 0;
   margin: 0;
   padding: 0;
   font: inherit;
@@ -410,14 +412,32 @@ body.fun-mode-on .fun-word {
   color: var(--accent);
   cursor: pointer;
   pointer-events: auto;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.18em;
+  transition: color 0.15s ease;
+}
+
+body.fun-mode-on .fun-word::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -0.16em;
+  right: -0.16em;
+  top: 50%;
+  height: 1.28em;
+  transform: translateY(-50%);
+  background: var(--filter-active-bg);
+  border-radius: 0.22em;
+  pointer-events: none;
+  transition: background 0.15s ease;
 }
 
 body.fun-mode-on .fun-word:hover,
 body.fun-mode-on .fun-word:focus-visible {
   color: var(--accent-hover);
+}
+
+body.fun-mode-on .fun-word:hover::before,
+body.fun-mode-on .fun-word:focus-visible::before {
+  background: color-mix(in srgb, var(--filter-active-bg) 72%, var(--accent));
 }
 
 .about-list {
