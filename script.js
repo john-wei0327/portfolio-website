@@ -788,6 +788,289 @@
     });
   }
 
+  function initFunMode() {
+    var toggle = document.getElementById("fun-toggle");
+    var layer = document.getElementById("fun-float-layer");
+    if (!toggle || !layer) return;
+
+    var SIZE = 56;
+    var RADIUS = SIZE / 2;
+    var POP_MS = 340;
+    var GONE_MS = 5000;
+    var FUN_ITEMS = [
+      { id: "tennis-racket", label: "Tennis racket", emoji: "🎾" },
+      { id: "badminton-racket", label: "Badminton racket", emoji: "🏸" },
+      { id: "shuttlecock", label: "Badminton shuttlecock", emoji: "🪶" },
+      { id: "pottery-mugs", label: "Pottery mugs", emoji: "🍵" },
+      { id: "running-shoes", label: "Running shoes", emoji: "👟" },
+      { id: "karaoke-microphone", label: "Karaoke microphone", emoji: "🎤" },
+      { id: "board-games", label: "Card and board games", emoji: "🎲" },
+      { id: "books", label: "Books", emoji: "📚" },
+      { id: "dancing", label: "Dancing", emoji: "💃" },
+    ];
+    var ITEM_BY_ID = {};
+    FUN_ITEMS.forEach(function (item) {
+      ITEM_BY_ID[item.id] = item;
+    });
+    var SPAWN_MAP = {
+      badminton: ["badminton-racket", "shuttlecock"],
+      tennis: ["tennis-racket"],
+      "board-games": ["board-games"],
+      singing: ["karaoke-microphone"],
+      dancing: ["dancing"],
+      pottery: ["pottery-mugs"],
+    };
+    var MAX_BODIES = 40;
+    var wordButtons = Array.prototype.slice.call(
+      document.querySelectorAll(".fun-word")
+    );
+
+    var bodies = [];
+    var running = false;
+    var rafId = 0;
+    var timeouts = [];
+
+    function clearTimeouts() {
+      timeouts.forEach(function (id) {
+        clearTimeout(id);
+      });
+      timeouts = [];
+    }
+
+    function getPlayBounds() {
+      var header = document.querySelector(".header");
+      var top = header ? header.getBoundingClientRect().bottom : 0;
+      return {
+        left: 0,
+        top: top,
+        right: window.innerWidth,
+        bottom: window.innerHeight,
+      };
+    }
+
+    function randomVelocity() {
+      var speed = 1.1 + Math.random() * 1.7;
+      var angle = Math.random() * Math.PI * 2;
+      return {
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+      };
+    }
+
+    function randomPosition() {
+      var bounds = getPlayBounds();
+      var pad = RADIUS + 8;
+      var width = Math.max(bounds.right - bounds.left, pad * 2 + 1);
+      var height = Math.max(bounds.bottom - bounds.top, pad * 2 + 1);
+      return {
+        x: bounds.left + pad + Math.random() * (width - pad * 2),
+        y: bounds.top + pad + Math.random() * (height - pad * 2),
+      };
+    }
+
+    function renderBody(body) {
+      body.el.style.transform =
+        "translate(" + (body.x - RADIUS) + "px, " + (body.y - RADIUS) + "px)";
+    }
+
+    function bounceWalls(body) {
+      var bounds = getPlayBounds();
+      if (body.x - RADIUS < bounds.left) {
+        body.x = bounds.left + RADIUS;
+        body.vx = Math.abs(body.vx);
+      } else if (body.x + RADIUS > bounds.right) {
+        body.x = bounds.right - RADIUS;
+        body.vx = -Math.abs(body.vx);
+      }
+      if (body.y - RADIUS < bounds.top) {
+        body.y = bounds.top + RADIUS;
+        body.vy = Math.abs(body.vy);
+      } else if (body.y + RADIUS > bounds.bottom) {
+        body.y = bounds.bottom - RADIUS;
+        body.vy = -Math.abs(body.vy);
+      }
+    }
+
+    function resolveCollisions() {
+      var i;
+      var j;
+      for (i = 0; i < bodies.length; i += 1) {
+        if (!bodies[i].active) continue;
+        for (j = i + 1; j < bodies.length; j += 1) {
+          if (!bodies[j].active) continue;
+          var a = bodies[i];
+          var b = bodies[j];
+          var dx = b.x - a.x;
+          var dy = b.y - a.y;
+          var dist = Math.hypot(dx, dy);
+          var minDist = RADIUS * 2;
+          if (dist === 0 || dist >= minDist) continue;
+
+          var nx = dx / dist;
+          var ny = dy / dist;
+          var overlap = minDist - dist;
+          a.x -= nx * overlap * 0.5;
+          a.y -= ny * overlap * 0.5;
+          b.x += nx * overlap * 0.5;
+          b.y += ny * overlap * 0.5;
+
+          var rel = (a.vx - b.vx) * nx + (a.vy - b.vy) * ny;
+          if (rel > 0) continue;
+          a.vx -= rel * nx;
+          a.vy -= rel * ny;
+          b.vx += rel * nx;
+          b.vy += rel * ny;
+        }
+      }
+    }
+
+    function tick() {
+      if (!running) return;
+      bodies.forEach(function (body) {
+        if (!body.active) return;
+        body.x += body.vx;
+        body.y += body.vy;
+        bounceWalls(body);
+      });
+      resolveCollisions();
+      bodies.forEach(function (body) {
+        if (body.active) renderBody(body);
+      });
+      rafId = window.requestAnimationFrame(tick);
+    }
+
+    function respawn(body) {
+      if (!running) return;
+      var pos = randomPosition();
+      var vel = randomVelocity();
+      body.x = pos.x;
+      body.y = pos.y;
+      body.vx = vel.vx;
+      body.vy = vel.vy;
+      body.el.classList.remove("is-popping");
+      body.el.style.opacity = "";
+      renderBody(body);
+      body.el.hidden = false;
+      body.active = true;
+    }
+
+    function popBody(body) {
+      if (!body.active || !running) return;
+      body.active = false;
+      body.el.classList.add("is-popping");
+      var hideId = window.setTimeout(function () {
+        if (!running) return;
+        body.el.hidden = true;
+        body.el.classList.remove("is-popping");
+        body.el.style.opacity = "";
+      }, POP_MS);
+      var spawnId = window.setTimeout(function () {
+        respawn(body);
+      }, POP_MS + GONE_MS);
+      timeouts.push(hideId, spawnId);
+    }
+
+    function addBody(item) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "fun-float-item";
+      button.setAttribute("aria-label", "Pop " + item.label);
+      var glyph = document.createElement("span");
+      glyph.className = "fun-float-glyph";
+      glyph.setAttribute("aria-hidden", "true");
+      glyph.textContent = item.emoji;
+      button.appendChild(glyph);
+      layer.appendChild(button);
+
+      var pos = randomPosition();
+      var vel = randomVelocity();
+      var body = {
+        el: button,
+        x: pos.x,
+        y: pos.y,
+        vx: vel.vx,
+        vy: vel.vy,
+        active: true,
+      };
+      renderBody(body);
+      button.addEventListener("click", function (event) {
+        event.stopPropagation();
+        popBody(body);
+      });
+      bodies.push(body);
+      return body;
+    }
+
+    function spawnFromWord(kind) {
+      if (!running) return;
+      var ids = SPAWN_MAP[kind];
+      if (!ids) return;
+      ids.forEach(function (id) {
+        if (bodies.length >= MAX_BODIES) return;
+        var item = ITEM_BY_ID[id];
+        if (item) addBody(item);
+      });
+      if (ids.length === 1 && bodies.length < MAX_BODIES) {
+        var extra = ITEM_BY_ID[ids[0]];
+        if (extra) addBody(extra);
+      }
+    }
+
+    function setWordButtonsEnabled(enabled) {
+      document.body.classList.toggle("fun-mode-on", enabled);
+      wordButtons.forEach(function (btn) {
+        btn.disabled = !enabled;
+      });
+    }
+
+    function createBodies() {
+      layer.innerHTML = "";
+      bodies = [];
+      FUN_ITEMS.forEach(function (item) {
+        if (item.id === "dancing") return;
+        addBody(item);
+      });
+    }
+
+    function startFun() {
+      if (running) return;
+      running = true;
+      layer.hidden = false;
+      setWordButtonsEnabled(true);
+      createBodies();
+      rafId = window.requestAnimationFrame(tick);
+    }
+
+    function stopFun() {
+      running = false;
+      window.cancelAnimationFrame(rafId);
+      rafId = 0;
+      clearTimeouts();
+      bodies = [];
+      layer.innerHTML = "";
+      layer.hidden = true;
+      setWordButtonsEnabled(false);
+      toggle.classList.remove("is-on");
+      toggle.setAttribute("aria-pressed", "false");
+    }
+
+    toggle.addEventListener("click", function () {
+      var turningOn = toggle.getAttribute("aria-pressed") !== "true";
+      toggle.setAttribute("aria-pressed", turningOn ? "true" : "false");
+      toggle.classList.toggle("is-on", turningOn);
+      if (turningOn) startFun();
+      else stopFun();
+    });
+
+    wordButtons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        spawnFromWord(btn.getAttribute("data-fun-spawn"));
+      });
+    });
+
+    window.addEventListener("pagehide", stopFun);
+  }
+
   function initProjectsPage() {
     initProjectCardLayout();
     initProjectCardActions();
@@ -799,6 +1082,7 @@
 
   function initSite() {
     initProjectsPage();
+    initFunMode();
   }
 
   if (document.readyState === "loading") {

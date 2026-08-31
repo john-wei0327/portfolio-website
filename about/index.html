@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/styles.css?v=30" />
+    <link rel="stylesheet" href="/styles.css?v=36" />
   </head>
   <body class="subpage">
     <a class="skip-link" href="#main">Skip to content</a>
@@ -87,9 +87,17 @@
 
               </p>
               <p class="about-copy">
-                Beyond work, I’m a big fan of <strong>badminton</strong>, <strong>tennis</strong> and <strong>board</strong>
-                <strong>games</strong> and I thoroughly enjoy expressing myself creatively
-                through <strong>singing</strong>, <strong>dancing</strong> and the occasional <strong>pottery</strong>.
+                Beyond work, I’m a big fan of
+                <button type="button" class="fun-word" data-fun-spawn="badminton" disabled>badminton</button>,
+                <button type="button" class="fun-word" data-fun-spawn="tennis" disabled>tennis</button>
+                and
+                <button type="button" class="fun-word" data-fun-spawn="board-games" disabled>board games</button>
+                and I thoroughly enjoy expressing myself creatively
+                through
+                <button type="button" class="fun-word" data-fun-spawn="singing" disabled>singing</button>,
+                <button type="button" class="fun-word" data-fun-spawn="dancing" disabled>dancing</button>
+                and the occasional
+                <button type="button" class="fun-word" data-fun-spawn="pottery" disabled>pottery</button>.
 
               </p>
 
@@ -101,7 +109,18 @@
               <div>
                 <h2 class="about-subheading">Values</h2>
                 <ul class="about-list" aria-label="Values">
-                  <li>Fun</li>
+                  <li>
+                    <button
+                      type="button"
+                      class="fun-toggle"
+                      id="fun-toggle"
+                      aria-pressed="false"
+                      aria-label="Toggle fun mode"
+                    >
+                      Fun
+                      <span class="fun-toggle-switch" aria-hidden="true"></span>
+                    </button>
+                  </li>
                   <li>Curiosity</li>
                   <li>Kindness</li>
                 </ul>
@@ -137,6 +156,8 @@
       </div>
     </footer>
 
-    <script src="/script.js"></script>
+    <div id="fun-float-layer" class="fun-float-layer" hidden></div>
+
+    <script src="/script.js?v=30"></script>
   </body>
 </html>
