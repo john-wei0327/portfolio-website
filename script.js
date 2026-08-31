@@ -900,6 +900,7 @@
     }
 
     function resolveCollisions() {
+      var minDist = RADIUS * 2;
       var i;
       var j;
       for (i = 0; i < bodies.length; i += 1) {
@@ -911,11 +912,20 @@
           var dx = b.x - a.x;
           var dy = b.y - a.y;
           var dist = Math.hypot(dx, dy);
-          var minDist = RADIUS * 2;
-          if (dist === 0 || dist >= minDist) continue;
+          if (dist >= minDist) continue;
 
-          var nx = dx / dist;
-          var ny = dy / dist;
+          var nx;
+          var ny;
+          if (dist < 0.001) {
+            var angle = Math.random() * Math.PI * 2;
+            nx = Math.cos(angle);
+            ny = Math.sin(angle);
+            dist = 0.001;
+          } else {
+            nx = dx / dist;
+            ny = dy / dist;
+          }
+
           var overlap = minDist - dist;
           a.x -= nx * overlap * 0.5;
           a.y -= ny * overlap * 0.5;
@@ -923,7 +933,8 @@
           b.y += ny * overlap * 0.5;
 
           var rel = (a.vx - b.vx) * nx + (a.vy - b.vy) * ny;
-          if (rel > 0) continue;
+          if (rel <= 0) continue;
+
           a.vx -= rel * nx;
           a.vy -= rel * ny;
           b.vx += rel * nx;
@@ -941,8 +952,11 @@
         bounceWalls(body);
       });
       resolveCollisions();
+      resolveCollisions();
       bodies.forEach(function (body) {
-        if (body.active) renderBody(body);
+        if (!body.active) return;
+        bounceWalls(body);
+        renderBody(body);
       });
       rafId = window.requestAnimationFrame(tick);
     }
