@@ -839,12 +839,16 @@
 
     function getPlayBounds() {
       var header = document.querySelector(".header");
+      var footer = document.querySelector(".site-footer");
       var top = header ? header.getBoundingClientRect().bottom : 0;
+      var bottom = footer
+        ? footer.getBoundingClientRect().top
+        : window.innerHeight;
       return {
         left: 0,
         top: top,
         right: window.innerWidth,
-        bottom: window.innerHeight,
+        bottom: bottom,
       };
     }
 
