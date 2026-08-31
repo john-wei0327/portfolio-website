@@ -270,10 +270,43 @@ main p {
 }
 
 .hero {
+  --hero-photo-scale: 40%;
   padding-top: clamp(4rem, 12vw, 7rem);
   padding-bottom: clamp(4rem, 10vw, 6rem);
-  max-width: 720px;
+  max-width: 52rem;
   margin: 0 auto;
+}
+
+.hero-inner {
+  display: grid;
+  gap: 1.75rem;
+  align-items: center;
+}
+
+.hero-copy {
+  min-width: 0;
+  text-align: left;
+}
+
+.hero-photo {
+  display: block;
+  width: var(--hero-photo-scale);
+  height: auto;
+  max-width: 100%;
+  border-radius: 0;
+  box-shadow: 0 8px 24px rgba(26, 26, 24, 0.06);
+}
+
+@media (min-width: 700px) {
+  .hero-inner {
+    grid-template-columns: var(--hero-photo-scale) 1fr;
+    gap: 3rem;
+  }
+
+  .hero-photo {
+    width: 100%;
+    order: -1;
+  }
 }
 
 .hero-eyebrow {
@@ -296,6 +329,9 @@ main p {
   margin: 0 0 2rem;
   font-size: 1.125rem;
   color: var(--text-muted);
+  text-align: justify;
+  text-align-last: left;
+  text-justify: inter-word;
 }
 
 .hero-actions {
